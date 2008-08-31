@@ -5,8 +5,10 @@
 # Licensed under the GPLv2 or later. View LICENSE for more information
 #
 
-import gtk
-import arduinoide.core.i18n.gt._ as _ 
+import gettext
 
-class MainWindow:
-	def __init__(self, title=):
+def initialize(mopath):
+	gettext.bindtextdomain('ArduinoIDE', mopath)
+	gettext.textdomain('ArduinoIDE')
+
+_ = gettext.gettext
