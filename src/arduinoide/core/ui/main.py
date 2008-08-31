@@ -14,6 +14,7 @@ class MainWindow:
 			Initialize the main window.
 		"""
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+		self.window.set_title(title)
 	
 	def show(self):
 		"""

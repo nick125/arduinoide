@@ -7,10 +7,11 @@
 
 import arduinoide.core.ui.main
 import arduinoide.core.i18n.gt
+import os
 import gtk
 
 if __name__ == "__main__":
-	arduinoide.core.i18n.gt.initalize()
+	arduinoide.core.i18n.gt.initialize(os.path.abspath("resources/mo"))
 	mainwindow = arduinoide.core.ui.main.MainWindow()
 	mainwindow.show()
 	gtk.main()
