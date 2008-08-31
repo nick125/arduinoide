@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Arduino 0011 Makefile
 # Arduino adaptation by mellis, eighthave, oli.keller, it.daniher
 #
