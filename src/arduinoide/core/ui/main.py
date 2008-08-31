@@ -6,7 +6,7 @@
 #
 
 import gtk
-import arduinoide.core.i18n.gt._ as _ 
+from arduinoide.core.i18n.gt import _
 
 class MainWindow:
 	def __init__(self, title=_("Arduino IDE")):
