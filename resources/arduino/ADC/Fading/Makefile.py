@@ -17,6 +17,8 @@
 # Author:		Dale Weber <robotguy@hybotics.org>				
 #
 #
+import MakeLib, os, shutil, sys, time;
+
 #Name of the .pde you're trying to compile
 TARGET = "Fading"
 TARGET_EXT = ".pde"
@@ -91,15 +93,34 @@ ALL_ASFLAGS = "-mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)"
 #
 # Targets start here - the real conversion begins!
 #
+targetFile = ""
+sourceFile = ""
+
 # Default target.
 def BuildAll():
 	BuildAppletFiles();
 	Build();
-	currsize = SizeAfter();
+	SizeAfter();
 	
 	return;
 	
 def BuildAppletFiles():
+# applet_files: $(TARGET).pde
+	# Here is the "preprocessing".
+	# It creates a .cpp file based with the same name as the .pde file.
+	# On top of the new .cpp file comes the WProgram.h header.
+	# At the end there is a generic main() function attached.
+	# Then the .cpp file will be compiled. Errors during compile will
+	# refer to this new, automatically generated, file.
+	# Not the original .pde file you actually edit...
+
+	if (! os.path.exists(applet)) then:
+		os.mkdir("applet");
+		appletFile = "applet/" + TARGET + ".cpp";
+		sourceFile = TARGET + TARGET_EXT;
+		
+		# Copy the file
+		acopyfile(sourceFile, appletFile, '#include "WProgram.h"');
 
 	return;
 
@@ -124,19 +145,6 @@ def BuildHex():
 all: applet_files build sizeafter
 
 build: elf hex 
-
-applet_files: $(TARGET).pde
-	# Here is the "preprocessing".
-	# It creates a .cpp file based with the same name as the .pde file.
-	# On top of the new .cpp file comes the WProgram.h header.
-	# At the end there is a generic main() function attached.
-	# Then the .cpp file will be compiled. Errors during compile will
-	# refer to this new, automatically generated, file. 
-	# Not the original .pde file you actually edit...
-	test -d applet || mkdir applet
-	echo '#include "WProgram.h"' > applet/$(TARGET).cpp
-	cat $(TARGET).pde >> applet/$(TARGET).cpp
-	cat $(ARDUINO)/main.cxx >> applet/$(TARGET).cpp
 
 elf: applet/$(TARGET).elf
 hex: applet/$(TARGET).hex
