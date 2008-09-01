@@ -8,12 +8,12 @@
 import os
 import gtk
 # Our imports
-import arduinoide.globals as gbls
 import arduinoide.core.ui.main
 import arduinoide.core.i18n.gt
+from arduinoide import globals
 
 if __name__ == "__main__":
-	arduinoide.core.i18n.gt.initialize(os.path.join(gbls.RESOURCES_PATH, "mo"))
+	arduinoide.core.i18n.gt.initialize(os.path.join(globals.RESOURCES_PATH, "mo"))
 	mainwindow = arduinoide.core.ui.main.MainWindow()
 	mainwindow.connect_signals()
 	mainwindow.show()

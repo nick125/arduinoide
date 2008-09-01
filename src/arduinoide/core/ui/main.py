@@ -10,7 +10,7 @@ import sys
 import gtk
 import gtk.glade
 # Our imports
-import arduinoide.globals as gbls
+from arduinoide import globals
 
 class MainWindow:
 	def __init__(self):
@@ -18,11 +18,11 @@ class MainWindow:
 			Initialize the main window.
 		"""
 
-		self.gladefile = os.path.join(gbls.RESOURCES_PATH, "glade/editor.glade") # TODO: Fix this!
+		self.gladefile = os.path.join(globals.RESOURCES_PATH, "glade/editor.glade") # TODO: Fix this!
 		self.widgets = gtk.glade.XML(self.gladefile)
 		self.window = self.widgets.get_widget("MainWindow")
-		self.window.set_title("%s %s" % (gbls.PRODUCT_NAME, \
-                	gbls.PRODUCT_VERSIONSTR))
+		self.window.set_title("%s %s" % (globals.PRODUCT_NAME, \
+                	globals.PRODUCT_VERSIONSTR))
 
 	def connect_signals(self):
 		"""
