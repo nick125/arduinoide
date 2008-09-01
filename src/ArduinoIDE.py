@@ -5,13 +5,25 @@
 # Licensed under the GPLv2 or later. View LICENSE for more information
 #
 # System imports
-import os
-import sys
-import gtk
+try:
+	import os
+	import sys
+	import gtk
+except ImportError, exception:
+	print "******************************************************"
+	print " There was an error loading the following dependency: "
+	print " %s" % exception.message
+
 # Our imports
-import arduinoide.core.ui.main
-import arduinoide.core.i18n.gt
-from arduinoide import globals
+try:
+	import arduinoide.core.ui.main
+	import arduinoide.core.i18n.gt
+	from arduinoide import globals
+except:
+	print "*****************************************************************"
+	print " There was an error loading the following ArduinoIDE dependency: "
+	print " %s" % exception.message
+	print " You may need to reinstall ArduinoIDE."
 
 def version_error(product):
 	dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK,
@@ -28,6 +40,9 @@ def version_checks():
 	# Check PyGTK
 	if gtk.pygtk_version[0] < 2 or gtk.pygtk_version[1] < 4:
 		version_error("PyGTK")
+	# Check Python
+	if sys.version_info[0] < 2 or sys.version_info[1] < 4:
+		version_error("Python")
 
 if __name__ == "__main__":
 	# Run the version checks
