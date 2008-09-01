@@ -20,3 +20,8 @@ class MainWindow:
 		self.widgets = gtk.glade.XML(self.gladefile)
 		self.window = self.widgets.get_widget("MainWindow")
 
+	def show(self):
+		"""
+			Shows the widgets (as necessary)
+		"""
+		self.window.show()
