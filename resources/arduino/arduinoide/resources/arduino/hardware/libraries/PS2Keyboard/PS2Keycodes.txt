@@ -1,0 +1,288 @@
+Aquarium CB 27MHz Electronics Music Fotos ZX Spectrum Cooking Fishing
+
+Èeská verze <keyboard.htm>
+------------------------------------------------------------------------
+
+
+    PC keyboard
+
+------------------------------------------------------------------------
+
+This page is based on explanation, which I have obtained from Daniel
+Prokopec.
+Together with that description you can have a look at a page Interfacing
+the PC's Keyboard <http://www.beyondlogic.org/keyboard/keybrd.htm> too.
+
+
+      Description of the communication protocol between AT keyboard and PC
+
+The communication is running through two wires. In fact it is serial
+synchronous communication, where the wire called DATA (pin 2) serves for
+data transfer and the wire CLOCK (pin 1) provides clock signal. The
+power supply voltage 5V is on pin number 5, ground GND is on pin 4 and
+RESET signal is on pin 3. The RESET signal is used due to compatibility
+with an old type of XT keyboard. The frequency of CLOCK signal can vary
+from 10kHz to 20kHz.
+
+Keyboard Keyboard connector
+
+
+After pressing a key the keyboard sends a key code to the PC. After
+releasing a release-code is sent out followed by the key code of
+released key.
+
+The single communication code diagram
+
+The CLOCK signal is always distributed by keyboard (in both directions
+of transfer) and the code diagram is shown above. Valid data must be
+present at the time of falling (H \ L) edge of CLOCK signal. The DATA
+signal is controlled by keyboard when the keyboard is talking and by
+computer when the computer is talking. The communication code consists
+of one start bit, eight bit word, one parity bit (odd parity) and one
+stop bit.
+
+ s--DATA--PS
+
+ s	= start bit
+ DATA	= first bit (LSB least significant bit)
+ P	= parity bit (odd parity)
+ S	= stop bit
+
+As an example is shown the code of key 'A' (0x1C):
+
+          parity bit
+           |
+ start bit |
+  |        |
+  00011100001
+            |
+         stop bit
+An example of the key 'A' (0x1C) code
+
+
+In case of communication from computer to keyboard the computer starts
+with setting the DATA wire to state L and the keyboard will answer with
+the clock pulses on the CLOCK wire. The computer follows clock signal
+and sends all start, data, parity and stop bits like during
+communication from the keyboard to the computer.
+
+------------------------------------------------------------------------
+
+
+      Control codes sent from the PC to the keyboard
+
+(all control codes are in hexadecimal format)
+
+0xFF - reset of keyboard - runs the power-on test
+0xFE - request of the last sent key code from keyboard
+0xFA - acknowledge - ACK
+0xF6 - retrieving of implicit setting
+0xF5 - implicit blocking of keyboard - forces keyboard reset,
+       returns code ACK (0xFA), interrupts of keyboard scanning
+       and waits for next command, has no influence on LED indicators
+0xF4 - keyboard deblocking - resets output buffer, deblocks keyboard
+       and returns code ACK (0xFA)
+0xEE - echo - keyboard answers back with the code 0xEE too - just for test
+0xF2 - reading keyboard ID - keyboard answers ACK with two ID bytes
+       (0x83,0xAB) and continues in keyboard scanning
+0xED - control code of keyboard LED indicator
+       b0     - Scrollock - 1 on/0 off
+       b1     - Numlock   - 1 on/0 off
+       b2     - Capslock  - 1 on/0 off
+       b3..b7 - 0
+
+------------------------------------------------------------------------
+
+
+      Control codes sent from the keyboard to the PC
+
+(all control codes are in hexadecimal format)
+
+0xFF	- output buffer overflow - keyboard detects an error
+0xFE 	- request of the last sent key code from the computer, bad code,
+          command, parity etc.
+0xFA	- acknowledge - ACK
+0xF0 k  - releasing of a key  - k -> code of released key
+0xAA	- successful power-on test
+0xEE 	- echo - computer answers back with the code 0xEE too - just for test
+0x00	- output buffer overflow - keyboard detects an error
+
+------------------------------------------------------------------------
+
+
+      Scan codes of standard 101 key keyboard
+
+                     ** Main keys **
+-----------------------------------------------------------------------
+  Key      output code when pressing        output code when releasing
+-----------------------------------------------------------------------
+  `              0x0E                          0xF0 0x0E
+  1              0x16                          0xF0 0x16
+  2              0x1E                          0xF0 0x1E
+  3              0x26                          0xF0 0x26
+  4              0x25                          0xF0 0x25
+  5              0x2E                          0xF0 0x2E
+  6              0x36                          0xF0 0x36
+  7              0x3D                          0xF0 0x3D
+  8              0x3E                          0xF0 0x3E
+  9              0x46                          0xF0 0x46
+  0              0x45                          0xF0 0x45
+  -              0x4E                          0xF0 0x4E
+  =              0x55                          0xF0 0x55
+  Backspace      0x66                          0xF0 0x66
+
+  Tab key        0x0D                          0xF0 0x0D
+  Q              0x15                          0xF0 0x15
+  W              0x1D                          0xF0 0x1D
+  E              0x24                          0xF0 0x24
+  R              0x2D                          0xF0 0x2D
+  T              0x2C                          0xF0 0x2C
+  Y              0x35                          0xF0 0x35
+  U              0x3C                          0xF0 0x3C
+  I              0x43                          0xF0 0x43
+  O              0x44                          0xF0 0x44
+  P              0x4D                          0xF0 0x4D
+  [              0x54                          0xF0 0x54
+  ]              0x5B                          0xF0 0x5B
+  \              0x5D                          0xF0 0x5D
+
+  Caps Lock      0x58                          0xF0 0x58
+  A              0x1C                          0xF0 0x1C
+  S              0x1B                          0xF0 0x1B
+  D              0x23                          0xF0 0x23
+  F              0x2B                          0xF0 0x2B
+  G              0x34                          0xF0 0x34
+  H              0x33                          0xF0 0x33
+  J              0x3B                          0xF0 0x3B
+  K              0x42                          0xF0 0x42
+  L              0x4B                          0xF0 0x4B
+  ;              0x4C                          0xF0 0x4C
+  '              0x52                          0xF0 0x52
+  Enter          0x5A                          0xF0 0x5A
+
+  Left Shift     0x12                          0xF0 0x12
+  Z              0x1A                          0xF0 0x1A
+  X              0x22                          0xF0 0x22
+  C              0x21                          0xF0 0x21
+  V              0x2A                          0xF0 0x2A
+  B              0x32                          0xF0 0x32
+  N              0x31                          0xF0 0x31
+  M              0x3A                          0xF0 0x3A
+  ,              0x41                          0xF0 0x41
+  .              0x49                          0xF0 0x49
+  /              0x4A                          0xF0 0x4A
+  Right Shift    0x59                          0xF0 0x59
+
+  Left Ctrl      0x14                          0xF0 0x14
+  Left Alt       0x11                          0xF0 0x11
+  Space          0x29                          0xF0 0x29
+  Right Alt      0xE0 0x11                     0xE0 0xF0 0x11
+  Right Ctrl     0xE0 0x14                     0xE0 0xF0 0x14
+  ESC            0x76                          0xF0 0x76
+-----------------------------------------------------------------------
+
+
+                         ** Functions keys **
+-----------------------------------------------------------------------
+  Key      output code when pressing        output code when releasing
+-----------------------------------------------------------------------
+  F1             0x05                           0xF0 0x05
+  F2             0x06                           0xF0 0x06
+  F3             0x04                           0xF0 0x04
+  F4             0x0C                           0xF0 0x0C
+  F5             0x03                           0xF0 0x03
+  F6             0x0B                           0xF0 0x0B
+  F7             0x83                           0xF0 0x83
+  F8             0x0A                           0xF0 0x0A
+  F9             0x01                           0xF0 0x01
+  F10            0x09                           0xF0 0x09
+  F11            0x78                           0xF0 0x78
+  F12            0x07                           0xF0 0x07
+-----------------------------------------------------------------------
+
+
+                            ** Numeric keys **
+-----------------------------------------------------------------------
+  Key      output code when pressing        output code when releasing
+-----------------------------------------------------------------------
+  NumLock        0x77                           0xF0 0x77
+  -              0x7B                           0xF0 0x7B
+  /              0xE0 0x4A                      0xE0 0xF0 0x4A Note 1,2
+  .              0x71                           0xF0 0x71
+  *              0x7C                           0xF0 0x7C
+  +              0x79                           0xF0 0x79
+  Enter          0xE0 0x5A                      0xE0 0xF0 0x5A
+
+  0              0x70                           0xF0 0x70
+  1              0x69                           0xF0 0x69
+  2              0x72                           0xF0 0x72
+  3              0x7A                           0xF0 0x7A
+  4              0x6B                           0xF0 0x6B
+  5              0x73                           0xF0 0x73
+  6              0x74                           0xF0 0x74
+  7              0x6C                           0xF0 0x6C
+  8              0x75                           0xF0 0x75
+  9              0x7D                           0xF0 0x7D
+-----------------------------------------------------------------------
+
+
+                           ** Extended part **
+-----------------------------------------------------------------------
+  Key      output code when pressing        output code when releasing
+-----------------------------------------------------------------------
+  Ins            0xE0 0x70                       0xE0 0xF0 0x70 Note 1,2,3
+  Home           0xE0 0x6C                       0xE0 0xF0 0x6C Note 1,2,3
+  Pg Up          0xE0 0x7D                       0xE0 0xF0 0x7D Note 1,2,3
+  Del            0xE0 0x71                       0xE0 0xF0 0x71 Note 1,2,3
+  End            0xE0 0x69                       0xE0 0xF0 0x69 Note 1,2,3
+  Pg Dn          0xE0 0x7A                       0xE0 0xF0 0x7A Note 1,2,3
+
+  Up arrow       0xE0 0x75                       0xE0 0xF0 0x75 Note 1,2,3
+  Left arrow     0xE0 0x6B                       0xE0 0xF0 0x6B Note 1,2,3
+  Right arrow    0xE0 0x74                       0xE0 0xF0 0x74 Note 1,2,3
+  Down arrow     0xE0 0x72                       0xE0 0xF0 0x72 Note 1,2,3
+
+  PrtSc          0xE0 0x12 0xE0 0x7C             0xE0 0xF0 0x7C 0xE0 0xF0 0x12
+  Ctl-PrtSc      0xE0 0x7C                       0xE0 0xF0 0x7C
+  Alt-PrtSc      0x84                            0xE0 0x84
+  ScrLk          0x7E                            0xF0 0x7E
+  Ctrl-Break     0xE0 0x7E 0xE0 0xF0 0x7E        nothing
+
+-----------------------------------------------------------------------
+
+
+                              ** Notes **
+-----------------------------------------------------------------------
+
+  Note 1
+     When the left shift key is pressed :
+        Output code when pressing  - 0xE0 0xF0 0x12 0x** 0x**
+        Output code when releasing - 0x** 0x** 0x** 0xE0 0x12
+
+  Note 2
+     When the right shift key is pressed :
+        Output code when pressing  - 0xE0 0xF0 0x59 0x** 0x**
+        Output code when releasing - 0x** 0x** 0x** 0xE0 0x59
+
+  Note 3
+     When the Num Lock key is pressed :
+        Output code when pressing  - 0xE0 0x12 0x** 0x**
+        Output code when releasing - 0x** 0x** 0x** 0xE0 0xF0 0x12
+
+  '0x** 0x**'       - normal output code when pressing key
+  '0x** 0x** 0x**'  - normal output code when releasing key
+
+Daniel Prokopec, email.: prokopec@login.cz
+Vìtrná 678/IV. Vysoké Mýto 56601
+
+------------------------------------------------------------------------
+All the best and good luck from Petr Simandl
+
+p21s@hotmail.com <mailto:p21s@hotmail.com>
+
+	Main page <../../../index_a.htm>
+
+------------------------------------------------------------------------
+Last change : 3.6.1999
+
+------------------------------------------------------------------------

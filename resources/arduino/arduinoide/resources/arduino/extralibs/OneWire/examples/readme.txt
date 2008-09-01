@@ -1,0 +1,24 @@
+
+OneWire library for Arduino
+---------------------------
+
+This is a slightly modified version of the OneWire library originally written by Jim Studt for arduino-0007 and later updated for arduino-0008 by Josh Larios.  This new version eliminates the large lookup table that was previously used by the checksum calculation - otherwise it's identical to Josh's version.  It was developed under arduino-0010.
+
+For a general description and links, see
+
+    http://www.arduino.cc/playground/Learning/OneWire
+
+Jim Studt's original verion of this library is still available at
+
+    http://www.federated.com/~jim/onewire/
+
+Josh Larios' version is available at 
+
+    http://www.elsewhere.org/onewire/
+
+To install this library, you should just have to unzip the archive in the arduino-0010/hardware/libraries directory.  It will create a subdirectory
+called 'OneWire'.
+
+Tom Pollard
+pollard@alum.mit.edu
+May 20, 2008

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Aug 31 19:09:44 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Aug 31 23:19:26 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="MainWindow">
+    <property name="default_width">500</property>
+    <property name="default_height">450</property>
+    <signal name="destroy" handler="on_MainWindow_destroy"/>
     <child>
       <widget class="GtkVBox" id="MainVBox">
         <property name="visible">True</property>
@@ -23,6 +26,7 @@
                         <property name="label" translatable="yes">gtk-new</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_FileNewMenuItem_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -31,6 +35,7 @@
                         <property name="label" translatable="yes">gtk-open</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_FileOpenMenuItem_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -47,6 +52,7 @@
                         <property name="label" translatable="yes">gtk-save-as</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_FileSaveAsMenuItem_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -60,6 +66,7 @@
                         <property name="label" translatable="yes">gtk-quit</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_FileQuitMenuItem_activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -80,6 +87,7 @@
                         <property name="label" translatable="yes">gtk-cut</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_EditCutMenuItem_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -88,6 +96,7 @@
                         <property name="label" translatable="yes">gtk-copy</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_EditCopyMenuItem_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -96,6 +105,7 @@
                         <property name="label" translatable="yes">gtk-paste</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_EditPasteMenuItem_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -109,6 +119,7 @@
                         <property name="label" translatable="yes">gtk-preferences</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_EditPreferencesMenuItem_activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -136,6 +147,7 @@
                         <property name="label" translatable="yes">gtk-about</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_HelpAboutMenuItem_activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -148,13 +160,109 @@
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <widget class="GtkToolbar" id="EditorToolbar">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkToolButton" id="NewToolbarButton">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-new</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="OpenToolbarButton">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-open</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="SaveToolbarButton">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-save</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkSeparatorToolItem" id="separatortoolitem1">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="CompileToolbarButton">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Compile</property>
+                <property name="stock_id">gtk-execute</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="UploadToolbarbutton">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Upload</property>
+                <property name="stock_id">gtk-go-up</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
         </child>
         <child>
-          <placeholder/>
+          <widget class="GtkNotebook" id="TabNotebook">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <placeholder/>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">2</property>
+          </packing>
         </child>
         <child>
-          <placeholder/>
+          <widget class="GtkHBox" id="ProgressHBox">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkStatusbar" id="StatusBar">
+                <property name="visible">True</property>
+                <property name="spacing">2</property>
+                <property name="has_resize_grip">False</property>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkProgressBar" id="StatusProgressBar">
+                <property name="visible">True</property>
+                <property name="text" translatable="yes"></property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
         </child>
       </widget>
     </child>
