@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+#
+# ArduinoIDE Project (http://arduino.bitmeadow.org)
+# (c) 2008 ArduinoIDE Contributors
+# Licensed under GPLv2. View LICENSE for more information
+#
 # Arduino 0011 Makefile
 # Arduino adaptation by mellis, eighthave, oli.keller, it.daniher
 #
@@ -11,8 +16,10 @@
 # 31-Aug-2008:	Conversion to Python started
 # Author:		Dale Weber <robotguy@hybotics.org>				
 #
+#
 #Name of the .pde you're trying to compile
 TARGET = "Fading"
+TARGET_EXT = ".pde"
 #Name of the MCU in your arduino
 MCU = "atmega168"
 #hz of the MCU in your arduino
@@ -59,13 +66,14 @@ CXXFLAGS = "$(CDEFS) $(CINCS) -O$(OPT)"
 LDFLAGS = "-lm"
 
 # Program settings
-CC = "$(AVR_TOOLS_PATH)/avr-gcc
-CXX = "$(AVR_TOOLS_PATH)/avr-g++
-OBJCOPY = "$(AVR_TOOLS_PATH)/avr-objcopy
-OBJDUMP = "$(AVR_TOOLS_PATH)/avr-objdump
-AR  = "$(AVR_TOOLS_PATH)/avr-ar
-SIZE = "$(AVR_TOOLS_PATH)/avr-size
-NM = "$(AVR_TOOLS_PATH)/avr-nm
+CC = "$(AVR_TOOLS_PATH)/avr-gcc"
+CXX = "$(AVR_TOOLS_PATH)/avr-g++"
+OBJCOPY = "$(AVR_TOOLS_PATH)/avr-objcopy"
+OBJDUMP = "$(AVR_TOOLS_PATH)/avr-objdump"
+AR  = "$(AVR_TOOLS_PATH)/avr-ar"
+SIZE = "$(AVR_TOOLS_PATH)/avr-size"
+NM = "$(AVR_TOOLS_PATH)/avr-nm"
+
 REMOVE = "rm -f"
 MV = "mv -f"
 
@@ -84,6 +92,35 @@ ALL_ASFLAGS = "-mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)"
 # Targets start here - the real conversion begins!
 #
 # Default target.
+def BuildAll():
+	BuildAppletFiles();
+	Build();
+	currsize = SizeAfter();
+	
+	return;
+	
+def BuildAppletFiles():
+
+	return;
+
+def Build():
+	BuildElf();
+	BuildHex();
+
+	return;
+
+def SizeAfter():
+
+	return;
+
+def BuildElf():
+
+	return;
+
+def BuildHex():
+
+	return;
+		
 all: applet_files build sizeafter
 
 build: elf hex 
@@ -105,8 +142,8 @@ elf: applet/$(TARGET).elf
 hex: applet/$(TARGET).hex
 
 # Display size of file.
-HEXSIZE = $(SIZE) --target=$(FORMAT) applet/$(TARGET).hex
-ELFSIZE = $(SIZE)  applet/$(TARGET).elf
+HEXSIZE = "$(SIZE) --target=$(FORMAT) applet/$(TARGET).hex"
+ELFSIZE = "$(SIZE)  applet/$(TARGET).elf"
 sizebefore:
 	@if [ -f applet/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_BEFORE); $(HEXSIZE); echo; fi
 
