@@ -34,7 +34,10 @@ class MainWindow:
 		##
 
 		signals = { 
-			"on_MainWindow_destroy": self.destroy
+			# Window
+			"on_MainWindow_destroy": self.destroy,
+			# Menus
+			"on_FileQuitMenuItem_activate": self.destroy,
 			}
 
 		self.widgets.signal_autoconnect(signals)
