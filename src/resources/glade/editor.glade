@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Aug 31 23:18:30 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Aug 31 23:19:26 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="MainWindow">
     <property name="default_width">500</property>
@@ -87,6 +87,7 @@
                         <property name="label" translatable="yes">gtk-cut</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_EditCutMenuItem_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -95,6 +96,7 @@
                         <property name="label" translatable="yes">gtk-copy</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_EditCopyMenuItem_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -103,6 +105,7 @@
                         <property name="label" translatable="yes">gtk-paste</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_EditPasteMenuItem_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -116,6 +119,7 @@
                         <property name="label" translatable="yes">gtk-preferences</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_EditPreferencesMenuItem_activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -143,6 +147,7 @@
                         <property name="label" translatable="yes">gtk-about</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_HelpAboutMenuItem_activate"/>
                       </widget>
                     </child>
                   </widget>
