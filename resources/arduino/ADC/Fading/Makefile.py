@@ -23,33 +23,33 @@ import MakeLib, os, shutil, sys, time;
 TARGET = "Fading"
 TARGET_EXT = ".pde"
 #Name of the MCU in your arduino
-MCU = "atmega168"
+MCU = "atmega168"									##### Should be a board preference
 #hz of the MCU in your arduino
-F_CPU = "16000000"
+F_CPU = "16000000"									##### Should be a board preference
 
 ############################################################################
 # Below here nothing should be changed...
 
-ARDUINO = "/home/it/SOURCE/arduino/leetcompilelibs"
-AVR_TOOLS_PATH = "/usr/bin"
-SRC =  "$(ARDUINO)/pins_arduino.c $(ARDUINO)/wiring.c $(ARDUINO)/wiring_analog.c $(ARDUINO)/wiring_digital.c $(ARDUINO)/wiring_pulse.c $(ARDUINO)/wiring_serial.c $(ARDUINO)/wiring_shift.c $(ARDUINO)/WInterrupts.c"
+ARDUINO = "/home/robotgy/Projects/Arduino/arduino-011/hardware/libraries"
+AVR_TOOLS_PATH = "/usr/bin"							##### Should be a tools preference
+SRC =  ARDUINO + "/pins_arduino.c " + ARDUINO + "/wiring.c " + ARDUINO + "/wiring_analog.c " + ARDUINO + "/wiring_digital.c " + ARDUINO + "/wiring_pulse.c " + ARDUINO + "/wiring_serial.c " + ARDUINO + "/wiring_shift.c " + ARDUINO + "/WInterrupts.c"
 CXXSRC = "$(ARDUINO)/HardwareSerial.cpp $(ARDUINO)/WMath.cpp"
-FORMAT = "ihex"
+FORMAT = "ihex"										##### Should be a project preference
 
 # Debugging format.
 # Native formats for AVR-GCC's -g are stabs [default], or dwarf-2.
 # AVR (extended) COFF requires stabs, plus an avr-objcopy run.
 DEBUG = "stabs"
 
-OPT = "s"
+OPT = "s"											##### Should be a build preference
 
 # Place -D or -U options here
-CDEFS = "-DF_CPU=$(F_CPU)"
-CXXDEFS = "-DF_CPU=$(F_CPU)"
+CDEFS = "-DF_CPU=" + F_CPU							###### Should be a build preference
+CXXDEFS = "-DF_CPU=" + F_CPU						###### Should be a build preference
 
 # Place -I options here
-CINCS = "-I$(ARDUINO)"
-CXXINCS = "-I$(ARDUINO)"
+CINCS = "-I" + ARDUINO								##### Should be a build preference
+CXXINCS = "-I" + ARDUINO							##### Should be a build preference
 
 # Compiler flag to set the C Standard level.
 # c89   - "ANSI" C
@@ -57,42 +57,43 @@ CXXINCS = "-I$(ARDUINO)"
 # c99   - ISO C99 standard (not yet fully implemented)
 # gnu99 - c99 plus GCC extensions
 CSTANDARD = "-std=gnu99"
-CDEBUG = "-g$(DEBUG)"
+CDEBUG = "-g$" + DEBUG
 CWARN = "-Wall -Wstrict-prototypes"
 CTUNING = "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums"
 #CEXTRA = -Wa,-adhlns=$(<:.c=.lst)
 
-CFLAGS = "$(CDEBUG) $(CDEFS) $(CINCS) -O$(OPT) $(CWARN) $(CSTANDARD) $(CEXTRA)"
-CXXFLAGS = "$(CDEFS) $(CINCS) -O$(OPT)"
+CFLAGS = "$" + CDEBUG + " " + CDEFS + " " + CINCS + " -O" + OPT + " " + CWARN + " " + CSTANDARD + " " + CEXTRA
+CXXFLAGS = CDEFS + " " + CINCS + " -O" + OPT
 #ASFLAGS = -Wa,-adhlns=$(<:.S=.lst),-gstabs 
 LDFLAGS = "-lm"
 
 # Program settings
-CC = "$(AVR_TOOLS_PATH)/avr-gcc"
-CXX = "$(AVR_TOOLS_PATH)/avr-g++"
-OBJCOPY = "$(AVR_TOOLS_PATH)/avr-objcopy"
-OBJDUMP = "$(AVR_TOOLS_PATH)/avr-objdump"
-AR  = "$(AVR_TOOLS_PATH)/avr-ar"
-SIZE = "$(AVR_TOOLS_PATH)/avr-size"
-NM = "$(AVR_TOOLS_PATH)/avr-nm"
+CC = AVR_TOOLS_PATH + "/avr-gcc"
+CXX = AVR_TOOLS_PATH + "/avr-g++"
+OBJCOPY = AVR_TOOLS_PATH + "/avr-objcopy"
+OBJDUMP = AVR_TOOLS_PATH + "/avr-objdump"
+AR  = AVR_TOOLS_PATH + "/avr-ar"
+SIZE = AVR_TOOLS_PATH + "/avr-size"
+NM = AVR_TOOLS_PATH + "/avr-nm"
 
 REMOVE = "rm -f"
 MV = "mv -f"
 
 # Define all object files.
-OBJ = "$(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)" 
+OBJ = "$(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)" # OBJ = "$(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)"
 
 # Define all listing files.
-LST = "$(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)"
+LST = "$(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)" # LST = "$(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)"
 
 # Combine all necessary flags and optional flags.
 # Add target processor to flags.
-ALL_CFLAGS = "-mmcu=$(MCU) -I. $(CFLAGS)"
-ALL_CXXFLAGS = "-mmcu=$(MCU) -I. $(CXXFLAGS)"
-ALL_ASFLAGS = "-mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)"
+ALL_CFLAGS = "-mmcu=" + MCU + " -I." + CFLAGS
+ALL_CXXFLAGS = "-mmcu=" + MCU + " -I." + CXXFLAGS
+ALL_ASFLAGS = "-mmcu=" + MCU + " -I. -x assembler-with-cpp " + ASFLAGS
 #
 # Targets start here - the real conversion begins!
 #
+appletFile = ""
 targetFile = ""
 sourceFile = ""
 
@@ -114,11 +115,11 @@ def BuildAppletFiles():
 	# refer to this new, automatically generated, file.
 	# Not the original .pde file you actually edit...
 
-	if (! os.path.exists(applet)) then:
+	if (not os.path.exists("applet")):
 		os.mkdir("applet");
-		appletFile = "applet/" + TARGET + ".cpp";
 		sourceFile = TARGET + TARGET_EXT;
-		
+		appletFile = "applet/" + TARGET + ".cpp";
+
 		# Copy the file
 		acopyfile(sourceFile, appletFile, '#include "WProgram.h"');
 
