@@ -13,7 +13,7 @@ except ImportError, exception:
 	print "******************************************************"
 	print " There was an error loading the following dependency: "
 	print " %s" % exception.message
-	raise SystemExit
+	raise SystemExit, "** Error loading required dependencies. **"
 
 # Our imports
 try:
@@ -21,11 +21,11 @@ try:
 	import arduinoide.core.i18n.gt
 	from arduinoide import globals
 except:
-	print "*****************************************************************"
-	print " There was an error loading the following ArduinoIDE dependency: "
+	print "****************************************************************"
+	print " There was an error loading the following ArduinoIDE component: "
 	print " %s" % exception.message
 	print " You may need to reinstall ArduinoIDE."
-	raise SystemExit
+	raise SystemExit, "** Error loading required ArduinoIDE components. **"
 
 def version_error(product):
 	dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK,
