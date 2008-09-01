@@ -10,11 +10,13 @@ import gtk
 import gtk.glade
 
 class MainWindow:
-	def __init__(self, title=_("Arduino IDE")):
+	def __init__(self):
 		"""
 			Initialize the main window.
 		"""
-		self.gladefile = os.path.abspath("../../resources/glade/editor.glade") # TODO: Fix this!
+		# Initialize Glade
+		self.gladefile = os.path.abspath("./resources/glade/editor.glade") # TODO: Fix this!
+		print self.gladefile
 		self.widgets = gtk.glade.XML(self.gladefile)
 		self.window = self.widgets.get_widget("MainWindow")
 	
