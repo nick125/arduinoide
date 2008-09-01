@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Aug 31 19:09:44 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Aug 31 21:28:42 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="MainWindow">
+    <property name="default_width">500</property>
+    <property name="default_height">450</property>
     <child>
       <widget class="GtkVBox" id="MainVBox">
         <property name="visible">True</property>
@@ -148,13 +150,109 @@
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <widget class="GtkToolbar" id="EditorToolbar">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkToolButton" id="NewToolbarButton">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-new</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="OpenToolbarButton">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-open</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="SaveToolbarButton">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-save</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkSeparatorToolItem" id="separatortoolitem1">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="CompileToolbarButton">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Compile</property>
+                <property name="stock_id">gtk-execute</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="UploadToolbarbutton">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Upload</property>
+                <property name="stock_id">gtk-go-up</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
         </child>
         <child>
-          <placeholder/>
+          <widget class="GtkNotebook" id="TabNotebook">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <placeholder/>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">2</property>
+          </packing>
         </child>
         <child>
-          <placeholder/>
+          <widget class="GtkHBox" id="ProgressHBox">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkStatusbar" id="StatusBar">
+                <property name="visible">True</property>
+                <property name="spacing">2</property>
+                <property name="has_resize_grip">False</property>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkProgressBar" id="StatusProgressBar">
+                <property name="visible">True</property>
+                <property name="text" translatable="yes"></property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
         </child>
       </widget>
     </child>

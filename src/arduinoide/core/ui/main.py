@@ -20,6 +20,7 @@ class MainWindow:
 		self.gladefile = os.path.join(gbls.RESOURCES_PATH, "glade/editor.glade") # TODO: Fix this!
 		self.widgets = gtk.glade.XML(self.gladefile)
 		self.window = self.widgets.get_widget("MainWindow")
+		self.window.set_title("%s %s" % (gbls.PRODUCT_NAME, gbls.PRODUCT_VERSIONSTR))
 
 	def show(self):
 		"""
