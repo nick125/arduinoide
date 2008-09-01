@@ -2,7 +2,7 @@
 #
 # ArduinoIDE Project (http://arduino.bitmeadow.org)
 # (c) 2008 ArduinoIDE Contributors
-# Licensed under GPLv2. View LICENSE for more information
+# Licensed under the GPL v2 or later. View LICENSE for more information
 #
 # Arduino 0011 Makefile
 # Arduino adaptation by mellis, eighthave, oli.keller, it.daniher
