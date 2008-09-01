@@ -1,0 +1,28 @@
+If you want to contribute to the ArduinoIDE project, we request that you follow
+our coding standards. 
+
+Coding Standard for Python Source Files ---------------------------------------
+	* All source files must have the header (See below)
+	* Tabs (No Spaces!)
+	* Classnames in CamelCase
+	* All Classes/Functions MUST have Docstrings (except for __init__)
+	* Comment your code, especially areas that are obscure. 
+
+	* Put a blank line between the end of your docstrings and the beginning 
+	  of your code
+	* Put a blank line between the end of one function and the beginning of 
+	  another
+	* Separate "system" imports and our imports
+	* Sort imports by module name length (if possible), ascending.
+	* Keep "import ..." and "from ... import ..." statements separate (if 
+	  possible)
+
+
+Header (Python) ---------------------------------------------------------------
+
+#!/usr/bin/env python
+#
+# ArduinoIDE Project (http://arduino.bitmeadow.org)
+# (c) 2008 ArduinoIDE Contributors
+# Licensed under the GPLv2 or later. View LICENSE for more information
+#
