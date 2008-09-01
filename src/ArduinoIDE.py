@@ -33,7 +33,7 @@ def version_error(product):
 	err_msg = "Your version of %s is not compatible with this program. Please upgrade before continuing."
 	dialog.format_secondary_text(err_msg % (product))
 	dialog.run()
-	sys.exit()
+	raise SystemExit, "** Dependency version error **"
 
 def version_checks():
 	# check GTK
