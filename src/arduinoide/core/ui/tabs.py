@@ -5,6 +5,8 @@
 # Licensed under the GPLv2 or later. View LICENSE for more information
 #
 
+import gtk
+
 class TabManager:
 	def __init__(self, notebook):
 		# Replace the notebook
