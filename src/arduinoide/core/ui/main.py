@@ -14,9 +14,8 @@ class MainWindow:
 		"""
 			Initialize the main window.
 		"""
-		# Initialize Glade
+
 		self.gladefile = os.path.abspath("./resources/glade/editor.glade") # TODO: Fix this!
-		print self.gladefile
 		self.widgets = gtk.glade.XML(self.gladefile)
 		self.window = self.widgets.get_widget("MainWindow")
 
@@ -24,4 +23,5 @@ class MainWindow:
 		"""
 			Shows the widgets (as necessary)
 		"""
+
 		self.window.show()
