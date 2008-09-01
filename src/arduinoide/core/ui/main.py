@@ -19,4 +19,4 @@ class MainWindow:
 		print self.gladefile
 		self.widgets = gtk.glade.XML(self.gladefile)
 		self.window = self.widgets.get_widget("MainWindow")
-	
+
