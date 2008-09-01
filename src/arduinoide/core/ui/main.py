@@ -10,6 +10,7 @@ import sys
 import gtk
 import gtk.glade
 # Our imports
+import arduinoide.core.ui.tabs as tabs
 from arduinoide import globals
 
 class MainWindow:

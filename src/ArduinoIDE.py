@@ -12,7 +12,7 @@ try:
 except ImportError, exception:
 	print "******************************************************"
 	print " There was an error loading the following dependency: "
-	print " %s" % exception.message
+	print " %s" % exc.message
 	raise SystemExit, "** Error loading required dependencies. **"
 
 # Our imports
@@ -20,10 +20,10 @@ try:
 	import arduinoide.core.ui.main
 	import arduinoide.core.i18n.gt
 	from arduinoide import globals
-except:
+except Exception, exc:
 	print "****************************************************************"
 	print " There was an error loading the following ArduinoIDE component: "
-	print " %s" % exception.message
+	print " %s" % exc.message
 	print " You may need to reinstall ArduinoIDE."
 	raise SystemExit, "** Error loading required ArduinoIDE components. **"
 

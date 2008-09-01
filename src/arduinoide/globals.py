@@ -8,6 +8,7 @@ import os
 
 PRODUCT_NAME = "ArduinoIDE"
 PRODUCT_VERSION = (0, 0, 1, 'Git')
+
 # Calculate the product string
 if len(PRODUCT_VERSION) > 3:
 	PRODUCT_VERSIONSTR = "%s-%s" % (".".join([str(x) for x in PRODUCT_VERSION[:3]]), PRODUCT_VERSION[3])
