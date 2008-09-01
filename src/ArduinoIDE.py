@@ -13,20 +13,25 @@ import arduinoide.core.ui.main
 import arduinoide.core.i18n.gt
 from arduinoide import globals
 
-if __name__ == "__main__":
-	# GTK Version check
-	if gtk.gtk_version[0] < 2 or gtk.gtk_version[1] < 8:
-		ver_dialog = gtk.MessageDialog(type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK, message_format="GTK Version Error")
-		ver_dialog.format_secondary_text("Your version of GTK is not compatible with this program. Please upgrade before continuing.")
-		ver_dialog.run()
-		sys.exit()
-	# PyGTK Version check
-	if gtk.pygtk_version[0] < 2 or gtk.pygtk_version[1] < 8:
-		ver_dialog = gtk.MessageDialog(type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK, message_format="PyGTK Version Error")
-		ver_dialog.format_secondary_text("Your version of PyGTK is not compatible with this program. Please upgrade before continuing.")
-		ver_dialog.run()
-		sys.exit()
+def version_error(product):
+	dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK,
+		message_format = "%s Version Error" % (product))
+	err_msg = "Your version of %s is not compatible with this program. Please upgrade before continuing."
+	dialog.format_secondary_text(err_msg % (product))
+	dialog.run()
+	sys.exit()
 
+def version_checks():
+	# check GTK
+	if gtk.gtk_version[0] < 2 or gtk.gtk_version[1] < 4:
+		version_error("GTK")
+	# Check PyGTK
+	if gtk.pygtk_version[0] < 2 or gtk.pygtk_version[1] < 4:
+		version_error("PyGTK")
+
+if __name__ == "__main__":
+	# Run the version checks
+	version_checks()
 	arduinoide.core.i18n.gt.initialize(os.path.join(globals.RESOURCES_PATH, "mo"))
 	mainwindow = arduinoide.core.ui.main.MainWindow()
 	mainwindow.connect_signals()
