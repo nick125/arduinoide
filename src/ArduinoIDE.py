@@ -7,6 +7,7 @@
 
 import arduinoide.core.ui.main
 import arduinoide.core.i18n.gt
+
 import os
 import gtk
 
