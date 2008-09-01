@@ -5,19 +5,16 @@
 # Licensed under the GPLv2 or later. View LICENSE for more information
 #
 
+import os
 import gtk
-from arduinoide.core.i18n.gt import _
+import gtk.glade
 
 class MainWindow:
 	def __init__(self, title=_("Arduino IDE")):
 		"""
 			Initialize the main window.
 		"""
-		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		self.window.set_title(title)
+		self.gladefile = os.path.abspath("../../resources/glade/editor.glade") # TODO: Fix this!
+		self.widgets = gtk.glade.XML(self.gladefile)
+		self.window = self.widgets.get_widget("MainWindow")
 	
-	def show(self):
-		"""
-			Place all of your widget show() calls here
-		"""
-		self.window.show()
