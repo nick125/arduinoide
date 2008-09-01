@@ -9,6 +9,6 @@ import os
 PRODUCT_NAME = "ArduinoIDE"
 PRODUCT_VERSION = (0,0,1,'Git')
 try:
-	RESOURCES_PATH = os.path.abspath(os.path.join(os.path.join("../", os.path.dirname(__file__)), "resources"))
+	RESOURCES_PATH = os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), "../"), "resources"))
 except NameError:
 	RESOURCES_PATH = os.path.abspath(os.path.join(os.path.getcwd(), "resources"))
