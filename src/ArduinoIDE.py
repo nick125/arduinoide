@@ -13,7 +13,7 @@ except ImportError, exception:
 	print "******************************************************"
 	print " There was an error loading the following dependency: "
 	print " %s" % exception.message
-	import sys; sys.exit()
+	raise SystemExit
 
 # Our imports
 try:
@@ -25,7 +25,7 @@ except:
 	print " There was an error loading the following ArduinoIDE dependency: "
 	print " %s" % exception.message
 	print " You may need to reinstall ArduinoIDE."
-	import sys; sys.exit()
+	raise SystemExit
 
 def version_error(product):
 	dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK,
