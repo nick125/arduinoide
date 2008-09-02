@@ -13,11 +13,15 @@
 # ONLY COMPILES SKETCH TO A .HEX FILE - Upload.sh needed to burn to AVR
 # Supports only "make" and "make clean"
 #
-# 31-Aug-2008:	Conversion to Python started
+# Date:			01-Sep-2008
+# Purpose:		Pythonizing variables and starting code conversion
 # Author:		Dale Weber <robotguy@hybotics.org>				
 #
+# Date:			31-Aug-2008
+# Purpose:		Conversion to Python started
+# Author:		Dale Weber <robotguy@hybotics.org>				
 #
-import MakeLib, os, shutil, sys, time;
+import BuildSystemLib, os, shutil, sys, time;
 
 #Name of the .pde you're trying to compile
 TARGET = "Fading"
@@ -33,7 +37,7 @@ F_CPU = "16000000"									##### Should be a board preference
 ARDUINO = "/home/robotgy/Projects/Arduino/arduino-011/hardware/libraries"
 AVR_TOOLS_PATH = "/usr/bin"							##### Should be a tools preference
 SRC =  ARDUINO + "/pins_arduino.c " + ARDUINO + "/wiring.c " + ARDUINO + "/wiring_analog.c " + ARDUINO + "/wiring_digital.c " + ARDUINO + "/wiring_pulse.c " + ARDUINO + "/wiring_serial.c " + ARDUINO + "/wiring_shift.c " + ARDUINO + "/WInterrupts.c"
-CXXSRC = "$(ARDUINO)/HardwareSerial.cpp $(ARDUINO)/WMath.cpp"
+CXXSRC = ARDUINO + "/HardwareSerial.cpp " + ARDUINO + "/WMath.cpp"
 FORMAT = "ihex"										##### Should be a project preference
 
 # Debugging format.
@@ -67,7 +71,7 @@ CXXFLAGS = CDEFS + " " + CINCS + " -O" + OPT
 #ASFLAGS = -Wa,-adhlns=$(<:.S=.lst),-gstabs 
 LDFLAGS = "-lm"
 
-# Program settings
+# Program settings - AVR_TOOLS_PATH should be a preference.
 CC = AVR_TOOLS_PATH + "/avr-gcc"
 CXX = AVR_TOOLS_PATH + "/avr-g++"
 OBJCOPY = AVR_TOOLS_PATH + "/avr-objcopy"
@@ -93,7 +97,11 @@ ALL_ASFLAGS = "-mmcu=" + MCU + " -I. -x assembler-with-cpp " + ASFLAGS
 #
 # Targets start here - the real conversion begins!
 #
-appletFile = ""
+appletFile = "applet/" + TARGET
+appletFileElf = appletFile + ".elf"
+appletFileHex = appletFile + ".hex"
+appletFileCpp = appletFile + ".cpp"
+
 targetFile = ""
 sourceFile = ""
 
@@ -101,8 +109,7 @@ sourceFile = ""
 def BuildAll():
 	BuildAppletFiles();
 	Build();
-	SizeAfter();
-	
+	ShowSize(appletFileElf, MSG_SIZE_AFTER, HEX);
 	return;
 	
 def BuildAppletFiles():
@@ -115,17 +122,17 @@ def BuildAppletFiles():
 	# refer to this new, automatically generated, file.
 	# Not the original .pde file you actually edit...
 
-	if (not os.path.exists("applet")):
+	if (not os.path.isdir("applet")):
 		os.mkdir("applet");
 		sourceFile = TARGET + TARGET_EXT;
-		appletFile = "applet/" + TARGET + ".cpp";
 
 		# Copy the file
-		acopyfile(sourceFile, appletFile, '#include "WProgram.h"');
+		BCopyFile(sourceFile, appletFileCpp, '#include "WProgram.h"');
 
 	return;
 
 def Build():
+	
 	BuildElf();
 	BuildHex();
 
@@ -143,21 +150,49 @@ def BuildHex():
 
 	return;
 		
-all: applet_files build sizeafter
+# all: applet_files build sizeafter
 
-build: elf hex 
+#build: elf hex 
 
-elf: applet/$(TARGET).elf
-hex: applet/$(TARGET).hex
+elf: appletFileElf
+hex: appletFileHex
 
 # Display size of file.
-HEXSIZE = "$(SIZE) --target=$(FORMAT) applet/$(TARGET).hex"
-ELFSIZE = "$(SIZE)  applet/$(TARGET).elf"
-sizebefore:
-	@if [ -f applet/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_BEFORE); $(HEXSIZE); echo; fi
+HEXSIZE = SIZE + " --target=" + FORMAT + appletFileHex
+ELFSIZE = SIZE + appletFileElf
 
-sizeafter:
-	@if [ -f applet/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_AFTER); $(HEXSIZE); echo; fi
+# epath = "applet/" + TARGET + ".elf"
+# size = MSG_SIZE_BEFORE
+# shex = HEXSIZE
+#
+# This one routine can do both sizebefore and sizeafter.
+def ShowSize(epath, size, shex):
+	if (os.path.exists(epath)):
+		print;
+		print size; shex;
+		print;
+
+# epath = "applet/" + TARGET + ".elf"
+# size = MSG_SIZE_AFTER
+# shex = HEXSIZE
+def ShowSizeAfter(epath, size, shex):
+	if (os.path.exists(epath)):
+		print;
+		print size; shex;
+		print;
+
+#sizebefore:
+#	@if [ -f applet/$(TARGET).elf ]; then
+#		echo;
+#		echo $(MSG_SIZE_BEFORE); $(HEXSIZE);
+#		echo
+#	fi
+#sizeafter:
+#	@if [ -f applet/$(TARGET).elf ]; then
+#		echo;
+#		echo $(MSG_SIZE_AFTER); $(HEXSIZE);
+#		echo;
+#	fi
 
 .SUFFIXES: .elf .hex
 
@@ -171,7 +206,6 @@ applet/$(TARGET).elf: $(TARGET).pde applet/core.a
 
 applet/core.a: $(OBJ)
 	@for i in $(OBJ); do echo $(AR) rcs applet/core.a $$i; $(AR) rcs applet/core.a $$i; done
-
 
 
 # Compile: create object files from C++ source files.
