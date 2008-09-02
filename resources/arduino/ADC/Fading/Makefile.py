@@ -13,6 +13,11 @@
 # ONLY COMPILES SKETCH TO A .HEX FILE - Upload.sh needed to burn to AVR
 # Supports only "make" and "make clean"
 #
+# Date:			02-Sep-2008
+# Purpose:		More Pythonizing vars; Starting to convert code;
+#				Moved ShowSize() to BuildSystemLib as BShowSize()
+# Author:		Dale Weber <robotguy@hybotics.org>
+#
 # Date:			01-Sep-2008
 # Purpose:		Pythonizing variables and starting code conversion
 # Author:		Dale Weber <robotguy@hybotics.org>				
@@ -24,7 +29,9 @@
 import BuildSystemLib, os, shutil, sys, time;
 
 #Name of the .pde you're trying to compile
+# TARGET will be pased into the Build System
 TARGET = "Fading"
+# TARGET_EXT will be passed in or will be a part of TARGET
 TARGET_EXT = ".pde"
 #Name of the MCU in your arduino
 MCU = "atmega168"									##### Should be a board preference
@@ -109,7 +116,7 @@ sourceFile = ""
 def BuildAll():
 	BuildAppletFiles();
 	Build();
-	ShowSize(appletFileElf, MSG_SIZE_AFTER, HEX);
+	BShowSize(appletFileElf, MSG_SIZE_AFTER, HEXSIZE);
 	return;
 	
 def BuildAppletFiles():
@@ -138,10 +145,6 @@ def Build():
 
 	return;
 
-def SizeAfter():
-
-	return;
-
 def BuildElf():
 
 	return;
@@ -162,23 +165,12 @@ HEXSIZE = SIZE + " --target=" + FORMAT + appletFileHex
 ELFSIZE = SIZE + appletFileElf
 
 # epath = "applet/" + TARGET + ".elf"
-# size = MSG_SIZE_BEFORE
-# shex = HEXSIZE
-#
-# This one routine can do both sizebefore and sizeafter.
-def ShowSize(epath, size, shex):
-	if (os.path.exists(epath)):
-		print;
-		print size; shex;
-		print;
-
-# epath = "applet/" + TARGET + ".elf"
 # size = MSG_SIZE_AFTER
 # shex = HEXSIZE
-def ShowSizeAfter(epath, size, shex):
+def ShowSizeAfter(epath, size, hexelf):
 	if (os.path.exists(epath)):
 		print;
-		print size; shex;
+		print size; hexelf;
 		print;
 
 #sizebefore:
