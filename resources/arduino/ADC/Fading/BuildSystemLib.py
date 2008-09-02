@@ -1,4 +1,4 @@
-!#/usr/bin/env python
+#!/usr/bin/env python
 #
 # ArduinoIDE Project (http://arduino.bitmeadow.org)
 # (c) 2008 ArduinoIDE Contributors
@@ -9,12 +9,14 @@
 
 #
 # Copy src to dst after writing a header - not yet tested
+import os, sys, errno;
+
 def BCopyFile(src, dest, header):
 	line = "";
 
 	# Open files
-	finp = os.open(src, "r");
-	fout = os.open(dest, "w");
+	finp = os.open(src, O_RDONLY);
+	fout = os.open(dest, WRITE);
 	
 	fout.write(header);			# Write out the header line
 	lcnt = 1;					# Line counter
@@ -32,3 +34,5 @@ def BCopyFile(src, dest, header):
 	fout.close();
 	
 	return lcnt;
+
+BCopyFile("a.txt", "b.txt", "This is the header");
