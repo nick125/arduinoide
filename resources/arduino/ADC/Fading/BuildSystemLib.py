@@ -6,11 +6,22 @@
 #
 # BuildSystemLib module for the Python IDE for Arduino
 #
-
+# Date:		02-Sep-2008
+# Purpose:	New name for MakeLib is BuildSystemLib; Added BShowSize()
+# Author:	Dale Weber <robotguy@hybotics.org>
 #
-# Copy src to dst after writing a header - not yet tested
 import os, sys, errno;
 
+# epath = Path to file
+# size = MSG_SIZE_BEFORE or MSG_SIZE_AFTER
+# shex = HEX size (i.e, HEXSIZE)
+def BShowSize(epath, size, shex):
+	if (os.path.exists(epath)):
+		print;
+		print size; shex;
+		print;
+
+# Copy src to dst after writing a header - not yet tested
 def BCopyFile(src, dest, header):
 	line = "";
 
