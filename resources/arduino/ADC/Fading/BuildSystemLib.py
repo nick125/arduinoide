@@ -23,18 +23,18 @@ def BShowSize(epath, size, shex):
 
 # Copy src to dst after writing a header - not yet tested
 def BCopyFile(src, dest, header):
-	line = "";
+	line = " ";
 
 	# Open files
-	finp = os.open(src, O_RDONLY);
-	fout = os.open(dest, WRITE);
+	finp = open(src, 'r');
+	fout = open(dest, 'w');
 	
-	fout.write(header);			# Write out the header line
+	fout.write(header + "\n");	# Write out the header line
 	lcnt = 1;					# Line counter
 
 	# Copy src to dest
 	while (line <> ""):
-		finp.read(line);		# Get some data
+		line = finp.readline();	# Get some data
 
 		if (line != ""):		# Make sure we have data to write
 			fout.write(line);	# Write the line
