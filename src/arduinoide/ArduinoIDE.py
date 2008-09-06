@@ -15,42 +15,11 @@ except ImportError, exception:
 	print " %s" % exc.message
 	raise SystemExit, "** Error loading required dependencies. **"
 
-# Our imports
-try:
-	import arduinoide.core.ui.main
-	import arduinoide.core.i18n.gt
-	from arduinoide import globals
-except Exception, exc:
-	print "****************************************************************"
-	print " There was an error loading the following ArduinoIDE component: "
-	print " %s" % exc.message
-	print " You may need to reinstall ArduinoIDE."
-	raise SystemExit, "** Error loading required ArduinoIDE components. **"
+import ui.main
 
-def version_error(product):
-	dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK,
-		message_format = "%s Version Error" % (product))
-	err_msg = "Your version of %s is not compatible with this program. Please upgrade before continuing."
-	dialog.format_secondary_text(err_msg % (product))
-	dialog.run()
-	raise SystemExit, "** Dependency version error: %s **" % (product)
-
-def version_checks():
-	# check GTK
-	if gtk.gtk_version[0] < 2 or gtk.gtk_version[1] < 4:
-		version_error("GTK")
-	# Check PyGTK
-	if gtk.pygtk_version[0] < 2 or gtk.pygtk_version[1] < 4:
-		version_error("PyGTK")
-	# Check Python
-	if sys.version_info[0] < 2 or sys.version_info[1] < 4:
-		version_error("Python")
+def init():
+    gui = ui.main.MainWindow()
+    gtk.main()
 
 if __name__ == "__main__":
-	# Run the version checks
-	version_checks()
-	arduinoide.core.i18n.gt.initialize(os.path.join(globals.RESOURCES_PATH, "mo"))
-	mainwindow = arduinoide.core.ui.main.MainWindow()
-	mainwindow.connect_signals()
-	mainwindow.show()
-	gtk.main()
+    init()

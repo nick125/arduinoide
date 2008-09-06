@@ -8,55 +8,77 @@
 import os
 import sys
 import gtk
-import gtk.glade
-# Our imports
-import arduinoide.core.ui.tabs as tabs
-from arduinoide import globals
+# Our importsi
 
-class MainWindow:
-	def __init__(self):
-		"""
-			Initialize the main window.
-		"""
+from ui.i18n import _
 
-		self.gladefile = os.path.join(globals.RESOURCES_PATH, "glade/editor.glade") # TODO: Fix this!
-		self.widgets = gtk.glade.XML(self.gladefile)
-		self.window = self.widgets.get_widget("MainWindow")
-		self.window.set_title("%s %s" % (globals.PRODUCT_NAME, \
-                	globals.PRODUCT_VERSIONSTR))
+class MainWindow( gtk.Window ):
+    
+    def __init__(self):
+        """
+            Initialize the main window.
+        """
 
-	def connect_signals(self):
-		"""
-			Connect signals for the main UI here.
-		"""
+        gtk.Window.__init__( self )
 
-		##
-		## This will eventually connnect signals for plugins (possibly?)
-		##
+        self.buildGui()
+    
+    
+    def buildGui( self ):
+        """
+        This functions builds the main gui
 
-		signals = { 
-			# Window
-			"on_MainWindow_destroy": self.destroy,
-			# Menus
-			"on_FileQuitMenuItem_activate": self.destroy,
-			}
+        Arguments:
+        - self: The main object pointer
+        """
 
-		self.widgets.signal_autoconnect(signals)
+        
+        accelGroup = gtk.AccelGroup()
+        self.add_accel_group( accelGroup )
+        
+        self.accelGroup = accelGroup
+        
+        self.set_title( "mouseTrap" )
+        self.connect( "destroy", self.close)
+       
+        self.vBox = gtk.VBox()
+        
+        self.vBox.pack_start( self.buildMenu(), False, False )
 
-	def show(self):
-		"""
-			Shows the widgets (as necessary)
-		"""
+        self.vBox.show_all()
+        self.add(self.vBox)
+        self.show()
 
-		self.window.show()
+    def buildMenu( self ):
+        """
+        Builds The application menu
 
-	def destroy(self, *args, **kwargs):
-		"""
-			Destroys the Main Window
-		"""
+        Arguments:
+        - self: The main object pointer.
+        """
 
-		## This will eventually call some type of shutdown routine
-		## that will shutdown plugins, trigger tabs to shutdown (save?),
-		## etc.
+        menu = gtk.Menu()
+        mainItems = dict()
 
-		gtk.main_quit()
+        menuBar = gtk.MenuBar()
+        menuBar.show()
+        
+        for item in ( _( "File" ), _( "Edit" ), _( "Project" ), _( "View" ), _("Snippets") ):
+            mainItems[ item ] = gtk.MenuItem( item )
+            mainItems[ item ].show()
+
+
+        for item in ( _( "File" ), _( "Edit" ), _( "Project" ), _( "View" ), _("Snippets") ):
+            menuBar.append( mainItems[item] )
+
+        return menuBar
+
+    def close( self, *args ):
+        """
+        Close Function for the quit button.
+        
+        Arguments:
+        - self: The main object pointer.
+        - *args: The widget callback arguments.
+        """
+        print "close"
