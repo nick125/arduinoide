@@ -8,7 +8,8 @@
 import os
 import sys
 import gtk
-import gtksourceview as gtksv
+import vte
+import gtksourceview2 as gtksv
 # Our importsi
 
 from arduinoide.ui.i18n import _
@@ -46,6 +47,8 @@ class MainWindow( gtk.Window ):
         self.vBox.pack_start( self._buildMenu(), False, False )
         self.vBox.pack_start( self._buildToolBar(), False, False )
         self.vBox.pack_start( self._buildMainNoteBook(), False, False )
+        
+        self._buildVte()
 
         self.vBox.show_all()
         self.add(self.vBox)
@@ -78,6 +81,11 @@ class MainWindow( gtk.Window ):
     def _buildToolBar( self ):
         """
         Builds The IDE toolbar
+
+        Arguments:
+        - self: The main object pointer
+
+        Returns The toolbar.
         """
 
         handlebox = gtk.HandleBox()
@@ -104,18 +112,37 @@ class MainWindow( gtk.Window ):
     def _buildMainNoteBook( self ):
         """
         Builds the main notebook of the ide
+
+        Arguments:
+        - self: The main object pointer
+
+        Returns The notebook.
         """
 
-        notebook = gtk.Notebook()
-        notebook.set_tab_pos( gtk.POS_TOP )
+        self.notebook = gtk.Notebook()
+        self.notebook.set_tab_pos( gtk.POS_TOP )
         
-        tab =  gtksv.SourceView()
+        tab =  gtksv.View()
         tab.set_show_line_numbers( True ) 
         
-        notebook.append_page( tab, gtk.Label( _( "New Tab" ) ) )
-        notebook.show()
+        self.notebook.append_page( tab, gtk.Label( _( "New Tab" ) ) )
+        self.notebook.show()
 
-        return notebook
+        return self.notebook
+
+    def _buildVte( self ):
+        """
+        Builds a VTE
+
+        Arguments:
+        - self: The main object pointer.
+        """
+        
+        vt = vte.Terminal ()
+        vt.connect ("child-exited", lambda term: gtk.main_quit())
+        vt.fork_command()
+
+        self.notebook.append_page( vt, gtk.Label( "VTE" ) )
     
     def _newStockImageButton( self, label, stock ):
         """
