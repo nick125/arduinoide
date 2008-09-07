@@ -8,6 +8,7 @@
 import os
 import sys
 import gtk
+import gtksourceview as gtksv
 # Our importsi
 
 from arduinoide.ui.i18n import _
@@ -44,6 +45,7 @@ class MainWindow( gtk.Window ):
         
         self.vBox.pack_start( self._buildMenu(), False, False )
         self.vBox.pack_start( self._buildToolBar(), False, False )
+        self.vBox.pack_start( self._buildMainNoteBook(), False, False )
 
         self.vBox.show_all()
         self.add(self.vBox)
@@ -99,6 +101,22 @@ class MainWindow( gtk.Window ):
 
         return handlebox
 
+    def _buildMainNoteBook( self ):
+        """
+        Builds the main notebook of the ide
+        """
+
+        notebook = gtk.Notebook()
+        notebook.set_tab_pos( gtk.POS_TOP )
+        
+        tab =  gtksv.SourceView()
+        tab.set_show_line_numbers( True ) 
+        
+        notebook.append_page( tab, gtk.Label( _( "New Tab" ) ) )
+        notebook.show()
+
+        return notebook
+    
     def _newStockImageButton( self, label, stock ):
         """
         Creates an image button from gtk's stock.
