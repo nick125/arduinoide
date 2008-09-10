@@ -26,7 +26,7 @@
 # Purpose:		Conversion to Python started
 # Author:		Dale Weber <robotguy@hybotics.org>				
 #
-import BuildSystemLib, os, shutil, sys, time;
+import BuildSystemLib, os, shutil;
 
 #Name of the .pde you're trying to compile
 # TARGET will be pased into the Build System
@@ -112,13 +112,6 @@ appletFileCpp = appletFile + ".cpp"
 targetFile = ""
 sourceFile = ""
 
-# Default target.
-def BuildAll():
-	BuildAppletFiles();
-	Build();
-	BShowSize(appletFileElf, MSG_SIZE_AFTER, HEXSIZE);
-	return;
-	
 def BuildAppletFiles():
 # applet_files: $(TARGET).pde
 	# Here is the "preprocessing".
@@ -138,13 +131,6 @@ def BuildAppletFiles():
 
 	return;
 
-def Build():
-	
-	BuildElf();
-	BuildHex();
-
-	return;
-
 def BuildElf():
 
 	return;
@@ -152,7 +138,21 @@ def BuildElf():
 def BuildHex():
 
 	return;
-		
+
+def Build():
+	
+	BuildElf();
+	BuildHex();
+
+	return;
+
+# Default target.
+def BuildAll():
+	BuildAppletFiles();
+	Build();
+	BShowSize(appletFileElf, MSG_SIZE_AFTER, HEXSIZE);
+	return;
+
 # all: applet_files build sizeafter
 
 #build: elf hex 
@@ -197,7 +197,10 @@ applet/$(TARGET).elf: $(TARGET).pde applet/core.a
 	$(CC) $(ALL_CFLAGS) -o $@ applet/$(TARGET).cpp -L. applet/core.a $(LDFLAGS)
 
 applet/core.a: $(OBJ)
-	@for i in $(OBJ); do echo $(AR) rcs applet/core.a $$i; $(AR) rcs applet/core.a $$i; done
+	@for i in $(OBJ); do
+		echo $(AR) rcs applet/core.a $$i;
+		$(AR) rcs applet/core.a $$i;
+	done
 
 
 # Compile: create object files from C++ source files.
