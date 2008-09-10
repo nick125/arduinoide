@@ -8,9 +8,10 @@
 #
 # Date:		02-Sep-2008
 # Purpose:	New name for MakeLib is BuildSystemLib; Added BShowSize()
+#			BFileCopy() now works and returns the number of lines written.
 # Author:	Dale Weber <robotguy@hybotics.org>
 #
-import os, sys, errno;
+import os;
 
 # epath = Path to file
 # size = MSG_SIZE_BEFORE or MSG_SIZE_AFTER
@@ -21,9 +22,13 @@ def BShowSize(epath, size, shex):
 		print size; shex;
 		print;
 
+	return;
+
 # Copy src to dst after writing a header - not yet tested
+# The output file is over written if it exists, or created.
+#	Returns: Total number of lines written to the output file.
 def BCopyFile(src, dest, header):
-	line = " ";
+	line = "x";					# Input buffer
 
 	# Open files
 	finp = open(src, 'r');
@@ -36,14 +41,12 @@ def BCopyFile(src, dest, header):
 	while (line <> ""):
 		line = finp.readline();	# Get some data
 
-		if (line != ""):		# Make sure we have data to write
+		if (line <> ""):		# Make sure we have data to write
 			fout.write(line);	# Write the line
-			lcnt += 1;			# Increment line counter
+			lcnt = lcnt + 1;	# Increment line counter
 
 	# Close up shop
 	finp.close();
 	fout.close();
-	
-	return lcnt;
 
-BCopyFile("a.txt", "b.txt", "This is the header");
+	return lcnt;
