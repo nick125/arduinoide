@@ -28,6 +28,8 @@
 #
 import BuildSystemLib, os, shutil;
 
+command = "";
+
 #Name of the .pde you're trying to compile
 # TARGET will be pased into the Build System
 TARGET = "Fading"
@@ -67,18 +69,19 @@ CXXINCS = "-I" + ARDUINO							##### Should be a build preference
 # gnu89 - c89 plus GCC extensions
 # c99   - ISO C99 standard (not yet fully implemented)
 # gnu99 - c99 plus GCC extensions
-CSTANDARD = "-std=gnu99"
-CDEBUG = "-g$" + DEBUG
-CWARN = "-Wall -Wstrict-prototypes"
-CTUNING = "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums"
+CSTANDARD = "-std=gnu99"							#### Default or build preference
+CDEBUG = "-g$" + DEBUG								#### Default or build preference
+CWARN = "-Wall -Wstrict-prototypes"					#### Default or build preference
+CTUNING = "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums"#### Default or build preference
 #CEXTRA = -Wa,-adhlns=$(<:.c=.lst)
 
 CFLAGS = "$" + CDEBUG + " " + CDEFS + " " + CINCS + " -O" + OPT + " " + CWARN + " " + CSTANDARD + " " + CEXTRA
-CXXFLAGS = CDEFS + " " + CINCS + " -O" + OPT
+CXXFLAGS = CDEFS + " " + CINCS + " -O" + OPT		#### Default or build preference
 #ASFLAGS = -Wa,-adhlns=$(<:.S=.lst),-gstabs 
 LDFLAGS = "-lm"
 
 # Program settings - AVR_TOOLS_PATH should be a preference.
+#
 CC = AVR_TOOLS_PATH + "/avr-gcc"
 CXX = AVR_TOOLS_PATH + "/avr-g++"
 OBJCOPY = AVR_TOOLS_PATH + "/avr-objcopy"
@@ -173,21 +176,12 @@ def ShowSizeAfter(epath, size, hexelf):
 		print size; hexelf;
 		print;
 
-#sizebefore:
-#	@if [ -f applet/$(TARGET).elf ]; then
-#		echo;
-#		echo $(MSG_SIZE_BEFORE); $(HEXSIZE);
-#		echo
-#	fi
-#sizeafter:
-#	@if [ -f applet/$(TARGET).elf ]; then
-#		echo;
-#		echo $(MSG_SIZE_AFTER); $(HEXSIZE);
-#		echo;
-#	fi
-
 .SUFFIXES: .elf .hex
-
+# LOOK:
+# I think the $@ is the same as in bash scripts - the rest of
+#	the command line arguments.  I'm not sure about the "$<"
+#	though.
+#
 .elf.hex:
 	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
 
@@ -195,6 +189,9 @@ def ShowSizeAfter(epath, size, hexelf):
 	# Link: create ELF output file from library.
 applet/$(TARGET).elf: $(TARGET).pde applet/core.a 
 	$(CC) $(ALL_CFLAGS) -o $@ applet/$(TARGET).cpp -L. applet/core.a $(LDFLAGS)
+	
+	command =  CC + " " + ALL_CFLAGS + " -o " +  $@ + " " + appletFileCpp + " -L. applet/core.a " + LDFLAGS
+	BExecuteCommand(command);
 
 applet/core.a: $(OBJ)
 	@for i in $(OBJ); do
@@ -202,6 +199,11 @@ applet/core.a: $(OBJ)
 		$(AR) rcs applet/core.a $$i;
 	done
 
+# Pythonized
+	for i in OBJ:
+		print AR + " rcs applet/core.a " + i;
+		command = AR + " rcs applet/core.a " + i;
+		BExecuteCommand(command);
 
 # Compile: create object files from C++ source files.
 .cpp.o:
@@ -216,11 +218,9 @@ applet/core.a: $(OBJ)
 .c.s:
 	$(CC) -S $(ALL_CFLAGS) $< -o $@
 
-
 # Assemble: create object files from assembler source files.
 .S.o:
 	$(CC) -c $(ALL_ASFLAGS) $< -o $@
-
 
 
 # Target: clean project.
