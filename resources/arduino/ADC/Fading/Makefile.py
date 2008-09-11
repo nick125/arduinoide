@@ -13,6 +13,10 @@
 # ONLY COMPILES SKETCH TO A .HEX FILE - Upload.sh needed to burn to AVR
 # Supports only "make" and "make clean"
 #
+# Date:			10-Sep-2008
+# Purpose:		More Pythonizing; removed some old code no longer needed.
+# Author:		Dale Weber <robotguy@hybotics.org>
+#
 # Date:			02-Sep-2008
 # Purpose:		More Pythonizing vars; Starting to convert code;
 #				Moved ShowSize() to BuildSystemLib as BShowSize()
@@ -32,88 +36,89 @@ command = "";
 
 #Name of the .pde you're trying to compile
 # TARGET will be pased into the Build System
-TARGET = "Fading"
+TARGET = "Fading";
 # TARGET_EXT will be passed in or will be a part of TARGET
-TARGET_EXT = ".pde"
+TARGET_EXT = ".pde";
 #Name of the MCU in your arduino
-MCU = "atmega168"									##### Should be a board preference
+MCU = "atmega168";									##### Should be a board preference
 #hz of the MCU in your arduino
-F_CPU = "16000000"									##### Should be a board preference
+F_CPU = "16000000";									##### Should be a board preference
 
 ############################################################################
 # Below here nothing should be changed...
 
-ARDUINO = "/home/robotgy/Projects/Arduino/arduino-011/hardware/libraries"
-AVR_TOOLS_PATH = "/usr/bin"							##### Should be a tools preference
-SRC =  ARDUINO + "/pins_arduino.c " + ARDUINO + "/wiring.c " + ARDUINO + "/wiring_analog.c " + ARDUINO + "/wiring_digital.c " + ARDUINO + "/wiring_pulse.c " + ARDUINO + "/wiring_serial.c " + ARDUINO + "/wiring_shift.c " + ARDUINO + "/WInterrupts.c"
-CXXSRC = ARDUINO + "/HardwareSerial.cpp " + ARDUINO + "/WMath.cpp"
-FORMAT = "ihex"										##### Should be a project preference
+ARDUINO = "/home/robotgy/Projects/Arduino/arduino-011/hardware/libraries";
+AVR_TOOLS_PATH = "/usr/bin"							##### Should be a tools preference;
+SRC =  ARDUINO + "/pins_arduino.c " + ARDUINO + "/wiring.c " + ARDUINO + "/wiring_analog.c " + ARDUINO + "/wiring_digital.c " + ARDUINO + "/wiring_pulse.c " + ARDUINO + "/wiring_serial.c " + ARDUINO + "/wiring_shift.c " + ARDUINO + "/WInterrupts.c";
+CXXSRC = ARDUINO + "/HardwareSerial.cpp " + ARDUINO + "/WMath.cpp";
+FORMAT = "ihex";									##### Should be a project preference
 
 # Debugging format.
 # Native formats for AVR-GCC's -g are stabs [default], or dwarf-2.
 # AVR (extended) COFF requires stabs, plus an avr-objcopy run.
-DEBUG = "stabs"
+DEBUG = "stabs";
 
-OPT = "s"											##### Should be a build preference
+OPT = "s";											##### Should be a build preference
 
 # Place -D or -U options here
-CDEFS = "-DF_CPU=" + F_CPU							###### Should be a build preference
-CXXDEFS = "-DF_CPU=" + F_CPU						###### Should be a build preference
+CDEFS = "-DF_CPU=" + F_CPU;							###### Should be a build preference
+CXXDEFS = "-DF_CPU=" + F_CPU;						###### Should be a build preference
 
 # Place -I options here
-CINCS = "-I" + ARDUINO								##### Should be a build preference
-CXXINCS = "-I" + ARDUINO							##### Should be a build preference
+CINCS = "-I" + ARDUINO;								##### Should be a build preference
+CXXINCS = "-I" + ARDUINO;							##### Should be a build preference
 
 # Compiler flag to set the C Standard level.
 # c89   - "ANSI" C
 # gnu89 - c89 plus GCC extensions
 # c99   - ISO C99 standard (not yet fully implemented)
 # gnu99 - c99 plus GCC extensions
-CSTANDARD = "-std=gnu99"							#### Default or build preference
-CDEBUG = "-g$" + DEBUG								#### Default or build preference
-CWARN = "-Wall -Wstrict-prototypes"					#### Default or build preference
-CTUNING = "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums"#### Default or build preference
+CSTANDARD = "-std=gnu99";							#### Default or build preference
+CDEBUG = "-g$" + DEBUG;								#### Default or build preference
+CWARN = "-Wall -Wstrict-prototypes";				#### Default or build preference
+CTUNING = "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums"#### Default or build preference;
 #CEXTRA = -Wa,-adhlns=$(<:.c=.lst)
 
-CFLAGS = "$" + CDEBUG + " " + CDEFS + " " + CINCS + " -O" + OPT + " " + CWARN + " " + CSTANDARD + " " + CEXTRA
-CXXFLAGS = CDEFS + " " + CINCS + " -O" + OPT		#### Default or build preference
+CFLAGS = "$" + CDEBUG + " " + CDEFS + " " + CINCS + " -O" + OPT + " " + CWARN + " " + CSTANDARD + " " + CEXTRA;
+CXXFLAGS = CDEFS + " " + CINCS + " -O" + OPT;		#### Default or build preference
 #ASFLAGS = -Wa,-adhlns=$(<:.S=.lst),-gstabs 
-LDFLAGS = "-lm"
+LDFLAGS = "-lm";
 
 # Program settings - AVR_TOOLS_PATH should be a preference.
 #
-CC = AVR_TOOLS_PATH + "/avr-gcc"
-CXX = AVR_TOOLS_PATH + "/avr-g++"
-OBJCOPY = AVR_TOOLS_PATH + "/avr-objcopy"
-OBJDUMP = AVR_TOOLS_PATH + "/avr-objdump"
-AR  = AVR_TOOLS_PATH + "/avr-ar"
-SIZE = AVR_TOOLS_PATH + "/avr-size"
-NM = AVR_TOOLS_PATH + "/avr-nm"
+CC = AVR_TOOLS_PATH + "/avr-gcc";
+CXX = AVR_TOOLS_PATH + "/avr-g++";
+OBJCOPY = AVR_TOOLS_PATH + "/avr-objcopy";
+OBJDUMP = AVR_TOOLS_PATH + "/avr-objdump";
+AR  = AVR_TOOLS_PATH + "/avr-ar";
+SIZE = AVR_TOOLS_PATH + "/avr-size";
+NM = AVR_TOOLS_PATH + "/avr-nm";
 
-REMOVE = "rm -f"
-MV = "mv -f"
+REMOVE = "rm -f";
+MV = "mv -f";
 
 # Define all object files.
-OBJ = "$(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)" # OBJ = "$(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)"
+OBJ = "$(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)" # OBJ = "$(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)";
 
 # Define all listing files.
-LST = "$(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)" # LST = "$(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)"
+LST = "$(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)" # LST = "$(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)";
 
 # Combine all necessary flags and optional flags.
 # Add target processor to flags.
-ALL_CFLAGS = "-mmcu=" + MCU + " -I." + CFLAGS
-ALL_CXXFLAGS = "-mmcu=" + MCU + " -I." + CXXFLAGS
-ALL_ASFLAGS = "-mmcu=" + MCU + " -I. -x assembler-with-cpp " + ASFLAGS
+ALL_CFLAGS = "-mmcu=" + MCU + " -I." + CFLAGS;
+ALL_CXXFLAGS = "-mmcu=" + MCU + " -I." + CXXFLAGS;
+ALL_ASFLAGS = "-mmcu=" + MCU + " -I. -x assembler-with-cpp " + ASFLAGS;
 #
 # Targets start here - the real conversion begins!
 #
-appletFile = "applet/" + TARGET
-appletFileElf = appletFile + ".elf"
-appletFileHex = appletFile + ".hex"
-appletFileCpp = appletFile + ".cpp"
+appletFile = "applet/" + TARGET;
+appletFileElf = appletFile + ".elf";
+appletFileHex = appletFile + ".hex";
+appletFileCpp = appletFile + ".cpp";
+appletFileEep = appletFile + ".eep";
 
-targetFile = ""
-sourceFile = ""
+targetFile = "";
+sourceFile = "";
 
 def BuildAppletFiles():
 # applet_files: $(TARGET).pde
@@ -160,21 +165,12 @@ def BuildAll():
 
 #build: elf hex 
 
-elf: appletFileElf
-hex: appletFileHex
+elf: appletFileElf;
+hex: appletFileHex;
 
 # Display size of file.
-HEXSIZE = SIZE + " --target=" + FORMAT + appletFileHex
-ELFSIZE = SIZE + appletFileElf
-
-# epath = "applet/" + TARGET + ".elf"
-# size = MSG_SIZE_AFTER
-# shex = HEXSIZE
-def ShowSizeAfter(epath, size, hexelf):
-	if (os.path.exists(epath)):
-		print;
-		print size; hexelf;
-		print;
+HEXSIZE = SIZE + " --target=" + FORMAT + appletFileHex;
+ELFSIZE = SIZE + appletFileElf;
 
 .SUFFIXES: .elf .hex
 # LOOK:
