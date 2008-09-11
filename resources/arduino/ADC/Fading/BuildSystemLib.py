@@ -6,6 +6,10 @@
 #
 # BuildSystemLib module for the Python IDE for Arduino
 #
+# Date:		10-Sep-2008
+# Purpose:	Removed testing code and rearranged code to fit structure.
+# Author:	Dale Weber <robotguy@hybotics.org>
+#
 # Date:		02-Sep-2008
 # Purpose:	New name for MakeLib is BuildSystemLib; Added BShowSize()
 #			BFileCopy() now works and returns the number of lines written.
