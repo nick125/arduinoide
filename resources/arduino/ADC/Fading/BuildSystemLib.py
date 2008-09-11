@@ -21,7 +21,9 @@ import os;
 # Handle the substitution macros like $(SRC:.c=.s) in a Makefile 
 # Replaces all occurances of a with b in src.
 def BSubst(src, a, b):
-	t = src.replace(a, b);
+	t = src + " ";
+	t = t.replace(a + " ", b + " ");
+	t = t.rstrip(t);
 	return t;
 
 # epath = Path to file
