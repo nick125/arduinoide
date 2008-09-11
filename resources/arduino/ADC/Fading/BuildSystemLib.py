@@ -18,6 +18,12 @@
 #
 import os;
 
+# Handle the substitution macros like $(SRC:.c=.s) in a Makefile 
+# Replaces all occurances of a with b in src.
+def BSubst(src, a, b):
+	t = src.replace(a, b);
+	return t;
+
 # epath = Path to file
 # size = MSG_SIZE_BEFORE or MSG_SIZE_AFTER
 # shex = HEX size (i.e, HEXSIZE)
