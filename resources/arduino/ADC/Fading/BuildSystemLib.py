@@ -8,6 +8,7 @@
 #
 # Date:		10-Sep-2008
 # Purpose:	Removed testing code and rearranged code to fit structure.
+#			Added some more comments.
 # Author:	Dale Weber <robotguy@hybotics.org>
 #
 # Date:		02-Sep-2008
@@ -28,24 +29,24 @@ def BShowSize(epath, size, shex):
 
 	return;
 
-# Copy src to dst after writing a header - not yet tested
+# Copy src to dest after writing a header
 # The output file is over written if it exists, or created.
 #	Returns: Total number of lines written to the output file.
 def BCopyFile(src, dest, header):
 	line = "x";					# Input buffer
 
 	# Open files
-	finp = open(src, 'r');
-	fout = open(dest, 'w');
+	finp = open(src, 'r');		# Input file is read only.
+	fout = open(dest, 'w');		# This will over write any existing output file.
 	
 	fout.write(header + "\n");	# Write out the header line
 	lcnt = 1;					# Line counter
 
 	# Copy src to dest
-	while (line <> ""):
-		line = finp.readline();	# Get some data
+	while (line <> ""):			# Go until end of file.
+		line = finp.readline();	# Read a line
 
-		if (line <> ""):		# Make sure we have data to write
+		if (line <> ""):		# Make sure we have a real line
 			fout.write(line);	# Write the line
 			lcnt = lcnt + 1;	# Increment line counter
 
