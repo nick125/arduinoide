@@ -174,25 +174,17 @@ hex: appletFileHex;
 HEXSIZE = SIZE + " --target=" + FORMAT + appletFileHex;
 ELFSIZE = SIZE + appletFileElf;
 
-.SUFFIXES: .elf .hex
-# LOOK:
-# I think the $@ is the same as in bash scripts - the rest of
-#	the command line arguments.  I'm not sure about the "$<"
-#	though.
-#
 .elf.hex:
 	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
 	# Pythonized
 	command = OBJCOPY +" -O " + FORMAT + " -R .eeprom"
 	BExecute(command);
 
-
 	# Link: create ELF output file from library.
-applet/$(TARGET).elf: $(TARGET).pde applet/core.a 
-	$(CC) $(ALL_CFLAGS) -o $@ applet/$(TARGET).cpp -L. applet/core.a $(LDFLAGS)
+	applet/$(TARGET).elf: $(TARGET).pde applet/core.a 
 
 	# Pythonized
-	command =  CC + " " + ALL_CFLAGS + " -o " +  $@ + " " + appletFileCpp + " -L. applet/core.a " + LDFLAGS
+	command =  CC + " " + ALL_CFLAGS + " " + appletFileCpp + " -L. applet/core.a " +  LDFLAGS
 	BExecute(command);
 
 applet/core.a: $(OBJ)
