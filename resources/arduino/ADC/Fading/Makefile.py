@@ -187,7 +187,7 @@ applet/$(TARGET).elf: $(TARGET).pde applet/core.a
 	$(CC) $(ALL_CFLAGS) -o $@ applet/$(TARGET).cpp -L. applet/core.a $(LDFLAGS)
 	
 	command =  CC + " " + ALL_CFLAGS + " -o " +  $@ + " " + appletFileCpp + " -L. applet/core.a " + LDFLAGS
-	BExecuteCommand(command);
+	BExecute(command);
 
 applet/core.a: $(OBJ)
 	@for i in $(OBJ); do
@@ -199,7 +199,7 @@ applet/core.a: $(OBJ)
 	for i in OBJ:
 		print AR + " rcs applet/core.a " + i;
 		command = AR + " rcs applet/core.a " + i;
-		BExecuteCommand(command);
+		BExecute(command);
 
 # Compile: create object files from C++ source files.
 .cpp.o:
@@ -209,7 +209,6 @@ applet/core.a: $(OBJ)
 .c.o:
 	$(CC) -c $(ALL_CFLAGS) $< -o $@ 
 
-
 # Compile: create assembler files from C source files.
 .c.s:
 	$(CC) -S $(ALL_CFLAGS) $< -o $@
@@ -218,9 +217,13 @@ applet/core.a: $(OBJ)
 .S.o:
 	$(CC) -c $(ALL_ASFLAGS) $< -o $@
 
-
 # Target: clean project.
 clean:
 	$(REMOVE) applet/$(TARGET).hex applet/$(TARGET).eep applet/$(TARGET).cof applet/$(TARGET).elf \
 	applet/$(TARGET).map applet/$(TARGET).sym applet/$(TARGET).lss applet/core.a \
 	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
+
+	# Pythonized - Not done yet.
+	REMOVE + appletFile + ".hed " + appletFile + ".eep " + appletFile + ".cof " + appletFileElf + \
+	appletFile + ".map " + appletFile + ".sym " + appleFile + ".lss applet/core.a " + \
+	OBJ + " " + LST + " " + $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
