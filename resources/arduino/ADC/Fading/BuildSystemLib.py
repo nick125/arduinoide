@@ -29,6 +29,10 @@ def BShowSize(epath, size, shex):
 
 	return;
 
+# Execute a system command, such as to compile a file
+def BExecute(cmd):
+	return;
+
 # Copy src to dest after writing a header
 # The output file is over written if it exists, or created.
 #	Returns: Total number of lines written to the output file.
