@@ -62,6 +62,12 @@ def BCopyFile(src, dest, header):
 			fout.write(line);	# Write the line
 			lcnt = lcnt + 1;	# Increment line counter
 
+	fout.write("\n");
+	fout.write("void main()\n");
+	fout.write("{\n");
+	fout.write("}\n");
+	lcnt = lcnt + 3;	
+
 	# Close up shop
 	finp.close();
 	fout.close();
