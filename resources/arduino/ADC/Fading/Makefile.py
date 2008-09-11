@@ -234,5 +234,5 @@ clean:
 	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
 
 	# Pythonized - Not done yet.
-	command = REMOVE + appletFileHex + " " + appletFile + ".eep " + appletFile + ".cof " + appletFileElf + appletFile + ".map " + appletFile + ".sym " + appleFile + ".lss + applet/core.a " + OBJ + " " + LST + " " + SRC.replace(".c ", ".s ") + " " + SRC.replace(".c ", ".s ") +" " + SRC.replace(".c ", ".d ") + " " + CXXSRC.replace(".cpp ", ".s ") + " " + CXXSRC.replace(".cpp ", ".d ")";
+	command = REMOVE + appletFileHex + " " + appletFile + ".eep " + appletFile + ".cof " + appletFileElf + appletFile + ".map " + appletFile + ".sym " + appleFile + ".lss + applet/core.a " + OBJ + " " + LST + " " + SRC.replace(".c", ".s") + " " + SRC.replace(".c", ".s") +" " + SRC.replace(".c", ".d") + " " + CXXSRC.replace(".cpp", ".s") + " " + CXXSRC.replace(".cpp", ".d")";
 	BExecute(command);
