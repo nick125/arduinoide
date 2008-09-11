@@ -15,6 +15,7 @@
 #
 # Date:			10-Sep-2008
 # Purpose:		More Pythonizing; removed some old code no longer needed.
+#				Eradicated the $@ and $< macros, and Pythonized most commands.
 # Author:		Dale Weber <robotguy@hybotics.org>
 #
 # Date:			02-Sep-2008
@@ -76,7 +77,9 @@ CXXINCS = "-I" + ARDUINO;							##### Should be a build preference
 CSTANDARD = "-std=gnu99";							#### Default or build preference
 CDEBUG = "-g$" + DEBUG;								#### Default or build preference
 CWARN = "-Wall -Wstrict-prototypes";				#### Default or build preference
-CTUNING = "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums"#### Default or build preference;
+CTUNING = "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums"####
+
+# Default or build preference;
 #CEXTRA = -Wa,-adhlns=$(<:.c=.lst)
 
 CFLAGS = "$" + CDEBUG + " " + CDEFS + " " + CINCS + " -O" + OPT + " " + CWARN + " " + CSTANDARD + " " + CEXTRA;
@@ -179,12 +182,16 @@ ELFSIZE = SIZE + appletFileElf;
 #
 .elf.hex:
 	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
+	# Pythonized
+	command = OBJCOPY +" -O " + FORMAT + " -R .eeprom"
+	BExecute(command);
 
 
 	# Link: create ELF output file from library.
 applet/$(TARGET).elf: $(TARGET).pde applet/core.a 
 	$(CC) $(ALL_CFLAGS) -o $@ applet/$(TARGET).cpp -L. applet/core.a $(LDFLAGS)
-	
+
+	# Pythonized
 	command =  CC + " " + ALL_CFLAGS + " -o " +  $@ + " " + appletFileCpp + " -L. applet/core.a " + LDFLAGS
 	BExecute(command);
 
@@ -202,20 +209,32 @@ applet/core.a: $(OBJ)
 
 # Compile: create object files from C++ source files.
 .cpp.o:
-	$(CXX) -c $(ALL_CXXFLAGS) $< -o $@ 
+	$(CXX) -c $(ALL_CXXFLAGS) $< -o $@
+	# Pythonized 
+	command = CXX + " -c " + ALL_CXXFLAGS;
+	BExecute(command);
 
 # Compile: create object files from C source files.
 .c.o:
-	$(CC) -c $(ALL_CFLAGS) $< -o $@ 
+	$(CC) -c $(ALL_CFLAGS) $< -o $@
+	# Pythonized 
+	command = CC + " -c " + ALL_CFLAGS;
+	BExecute(command);
 
 # Compile: create assembler files from C source files.
 .c.s:
 	$(CC) -S $(ALL_CFLAGS) $< -o $@
+	# Pythonized
+	command = CC + " -S " + ALL_CFLAGS;
+	BExecute(command);
 
 # Assemble: create object files from assembler source files.
 .S.o:
 	$(CC) -c $(ALL_ASFLAGS) $< -o $@
-
+	# Pythonized
+	command = CC + " -c " + ALL_ASFLAGS;
+	BExecute(command);
+	
 # Target: clean project.
 clean:
 	$(REMOVE) applet/$(TARGET).hex applet/$(TARGET).eep applet/$(TARGET).cof applet/$(TARGET).elf \
@@ -223,6 +242,5 @@ clean:
 	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
 
 	# Pythonized - Not done yet.
-	REMOVE + appletFile + ".hed " + appletFile + ".eep " + appletFile + ".cof " + appletFileElf + \
-	appletFile + ".map " + appletFile + ".sym " + appleFile + ".lss applet/core.a " + \
-	OBJ + " " + LST + " " + $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
+	command = REMOVE + appletFile + ".hed " + appletFile + ".eep " + appletFile + ".cof " + appletFileElf + appletFile + ".map " + appletFile + ".sym " + appleFile + ".lss + applet/core.a " + OBJ + " " + LST + " " + "$(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)";
+	BExecute(command);
