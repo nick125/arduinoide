@@ -115,7 +115,6 @@ appletFile = "applet/" + TARGET;
 appletFileElf = appletFile + ".elf";
 appletFileHex = appletFile + ".hex";
 appletFileCpp = appletFile + ".cpp";
-appletFileEep = appletFile + ".eep";
 
 targetFile = "";
 sourceFile = "";
@@ -197,8 +196,8 @@ applet/core.a: $(OBJ)
 
 # Pythonized
 	for i in OBJ:
-		print AR + " rcs applet/core.a " + i;
 		command = AR + " rcs applet/core.a " + i;
+		print command;
 		BExecute(command);
 
 # Compile: create object files from C++ source files.
