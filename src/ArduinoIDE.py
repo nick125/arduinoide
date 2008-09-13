@@ -18,8 +18,9 @@ except ImportError, exception:
 import arduinoide.ui.main as mainGui
 
 def init():
-    gui = mainGui.MainWindow()
-    gtk.main()
+	gui = mainGui.MainWindow()
+	gtk.main()
 
 if __name__ == "__main__":
-    init()
+	init()
+
