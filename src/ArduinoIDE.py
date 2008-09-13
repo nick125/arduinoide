@@ -9,6 +9,8 @@ try:
 	import os
 	import sys
 	import gtk
+	import gtksourceview2
+	
 except ImportError, exception:
 	print "******************************************************"
 	print " There was an error loading the following dependency: "
@@ -19,6 +21,8 @@ import arduinoide.ui.main as mainGui
 
 def init():
 	gui = mainGui.MainWindow()
+	gui.notebook.new_tab(gtksourceview2.View(), "New Tab")
+	gui.notebook.new_tab(gtksourceview2.View(), "New Tab 2")
 	gtk.main()
 
 if __name__ == "__main__":

@@ -14,6 +14,7 @@ import gtksourceview2 as gtksv
 
 from arduinoide.ui.i18n import _
 from arduinoide import ideglobals
+from arduinoide.ui.tabs import NotebookWidget
 
 class MainWindow( gtk.Window ):
 	def __init__(self):
@@ -43,7 +44,7 @@ class MainWindow( gtk.Window ):
         
 		self.vBox.pack_start(self._buildMenu(), False, False)
 		self.vBox.pack_start(self._buildToolBar(), False, False)
-		self.vBox.pack_start(self._buildMainNoteBook(), False, False)
+		self.vBox.pack_start(self._buildMainNoteBook(), True, True)
 
 		self.vBox.show_all()
 		self.add(self.vBox)
@@ -101,7 +102,7 @@ class MainWindow( gtk.Window ):
 			Returns The notebook.
 		"""
 
-		self.notebook = gtk.Notebook()
+		self.notebook = NotebookWidget()
 		self.notebook.set_tab_pos( gtk.POS_TOP )
 		self.notebook.show()
 
