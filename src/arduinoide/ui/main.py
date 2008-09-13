@@ -81,7 +81,6 @@ class MainWindow( gtk.Window ):
 		toolbar.set_style(gtk.TOOLBAR_BOTH)
 		toolbar.set_border_width(5)
         
-        
 		toolbar.insert_stock( gtk.STOCK_NEW, _( "Create New File" ), _( "Create New File" ), None, None, -1  ) 
 		toolbar.insert_stock( gtk.STOCK_OPEN, _( "Open File" ), _( "Open File" ), None, None, -1  ) 
 		toolbar.insert_stock( gtk.STOCK_SAVE, _( "Save File" ), _( "Save File" ), None, None, -1  ) 
@@ -89,9 +88,7 @@ class MainWindow( gtk.Window ):
 		toolbar.insert_stock( gtk.STOCK_EXECUTE, _( "Compile" ), _( "Compile" ), None, None, -1  )
 		toolbar.insert_stock( gtk.STOCK_GO_UP, _( "Upload" ), _( "Upload" ), None, None, -1  )
 
-#		toolbar.append_widget( self._newStockImageButton( "Upload", gtk.STOCK_GO_UP ), _( "Upload" ), _( "Upload" ) )
 		handlebox.add(toolbar)
-
 
 		return handlebox
 
