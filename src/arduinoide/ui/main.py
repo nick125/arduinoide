@@ -66,6 +66,19 @@ class MainWindow( gtk.Window ):
 			menuBar.append(mainItems[item])
 
 		return menuBar
+		
+	def _addToolbarStock(self, toolbar, image, label, tooltip, callback=None, data=None, position=-1):
+		"""
+			Adds a stock toolbar item
+		"""
+		toolitem = gtk.ToolButton()
+		toolitem.set_stock_id(image)
+		toolitem.set_label(label)
+
+		if callback:
+			toolitem.connect("clicked", callback, data)
+
+		toolbar.insert(toolitem, position)
 
 	def _buildToolBar(self):
 		"""
@@ -76,19 +89,19 @@ class MainWindow( gtk.Window ):
 
 		handlebox = gtk.HandleBox()
 
-		toolbar = gtk.Toolbar()
-		toolbar.set_orientation(gtk.ORIENTATION_HORIZONTAL)
-		toolbar.set_style(gtk.TOOLBAR_BOTH)
-		toolbar.set_border_width(5)
+		self.toolbar = gtk.Toolbar()
+		self.toolbar.set_orientation(gtk.ORIENTATION_HORIZONTAL)
+		self.toolbar.set_style(gtk.TOOLBAR_BOTH)
+		self.toolbar.set_border_width(5)
         
-		toolbar.insert_stock( gtk.STOCK_NEW, _( "Create New File" ), _( "Create New File" ), None, None, -1  ) 
-		toolbar.insert_stock( gtk.STOCK_OPEN, _( "Open File" ), _( "Open File" ), None, None, -1  ) 
-		toolbar.insert_stock( gtk.STOCK_SAVE, _( "Save File" ), _( "Save File" ), None, None, -1  ) 
-		toolbar.append_space()
-		toolbar.insert_stock( gtk.STOCK_EXECUTE, _( "Compile" ), _( "Compile" ), None, None, -1  )
-		toolbar.insert_stock( gtk.STOCK_GO_UP, _( "Upload" ), _( "Upload" ), None, None, -1  )
+		self._addToolbarStock(self.toolbar, gtk.STOCK_NEW, _("New"), _("Create New File"), callback=None) 
+		self._addToolbarStock(self.toolbar, gtk.STOCK_OPEN, _("Open"), _("Open File"), callback=None) 
+		self._addToolbarStock(self.toolbar, gtk.STOCK_SAVE, _("Save"), _("Save File"), callback=None) 
+		self.toolbar.insert(gtk.SeparatorToolItem(), -1)
+		self._addToolbarStock(self.toolbar, gtk.STOCK_EXECUTE, _("Compile"), _("Compile"), callback=None)
+		self._addToolbarStock(self.toolbar, gtk.STOCK_GO_UP, _("Upload"), _("Upload"), callback=None)
 
-		handlebox.add(toolbar)
+		handlebox.add(self.toolbar)
 
 		return handlebox
 
