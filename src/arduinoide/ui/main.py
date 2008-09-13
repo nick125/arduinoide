@@ -42,6 +42,8 @@ class MainWindow( gtk.Window ):
 		self.vBox.pack_start(self._buildMenu(), False, False)
 		self.vBox.pack_start(self._buildToolBar(), False, False)
 		self.vBox.pack_start(self._buildMainNoteBook(), True, True)
+		
+		self.set_default_size(640, 480)
 
 		self.vBox.show_all()
 		self.add(self.vBox)
