@@ -17,10 +17,10 @@ except ImportError, exception:
 	print " %s" % exc.message
 	raise SystemExit, "** Error loading required dependencies. **"
 
-import arduinoide.ui.main as mainGui
+import arduinoide.ui.main
 
 def init():
-	gui = mainGui.MainWindow()
+	gui = arduinoide.ui.main.MainWindow()
 	gui.notebook.new_tab(gtksourceview2.View(), "New Tab")
 	gui.notebook.new_tab(gtksourceview2.View(), "New Tab 2")
 	gtk.main()

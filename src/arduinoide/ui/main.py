@@ -5,12 +5,9 @@
 # Licensed under the GPLv2 or later. View LICENSE for more information
 #
 # System Imports
-import os
-import sys
 import gtk
-import vte
-import gtksourceview2 as gtksv
-# Our importsi
+
+# Our imports
 
 from arduinoide.ui.i18n import _
 from arduinoide import ideglobals
