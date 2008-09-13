@@ -13,6 +13,7 @@ import gtksourceview2 as gtksv
 # Our importsi
 
 from arduinoide.ui.i18n import _
+from arduinoide import ideglobals
 
 class MainWindow( gtk.Window ):
 	def __init__(self):
@@ -35,14 +36,14 @@ class MainWindow( gtk.Window ):
 		self.add_accel_group(accelGroup)
 		self.accelGroup = accelGroup
         
-		self.set_title("%s %s")
+		self.set_title("%s %s" % (ideglobals.PRODUCT_NAME, ideglobals.PRODUCT_VERSIONSTR))
 		self.connect( "destroy", self.close)
        
 		self.vBox = gtk.VBox()
         
-		self.vBox.pack_start( self._buildMenu(), False, False )
-		self.vBox.pack_start( self._buildToolBar(), False, False )
-		self.vBox.pack_start( self._buildMainNoteBook(), False, False )
+		self.vBox.pack_start(self._buildMenu(), False, False)
+		self.vBox.pack_start(self._buildToolBar(), False, False)
+		self.vBox.pack_start(self._buildMainNoteBook(), False, False)
         
 		self._buildVte()
 
