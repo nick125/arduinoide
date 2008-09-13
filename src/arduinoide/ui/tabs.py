@@ -19,6 +19,7 @@ class NotebookWidget(gtk.Notebook):
 			scrolled variable) and will put it in a scrolled
 			window.
 		"""
+		
 		if scrolled:
 			window = gtk.ScrolledWindow()
 			window.add(widget)
@@ -34,6 +35,7 @@ class NotebookWidget(gtk.Notebook):
 		# Create the tab label
 		label = self.create_tab_label(title, window)
 
+		# Append the page
 		self.append_page(window)
 		self.set_tab_label(window, label)
 		
@@ -61,5 +63,6 @@ class NotebookWidget(gtk.Notebook):
 		if pagenum != -1:
 			self.remove_page(pagenum)
 			tab.destroy()
-			if self.get_n_pages() <= 1:
-				self.set_property('show-tabs', False)
+			
+		if self.get_n_pages() <= 1:
+			self.set_property('show-tabs', False)
