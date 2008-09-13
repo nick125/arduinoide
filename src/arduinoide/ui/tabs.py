@@ -42,6 +42,10 @@ class NotebookWidget(gtk.Notebook):
 		self.set_current_page(self.get_n_pages())
 		
 	def create_tab_label(self, title, tab):
+		"""
+			Creates a tab label with a close button
+		"""
+		
 		hbox = gtk.HBox()
 		cbtn = gtk.Button()
 		label = gtk.Label(title)
@@ -59,6 +63,10 @@ class NotebookWidget(gtk.Notebook):
 		return hbox
 		
 	def close_tab(self, widget, tab):
+		"""
+			Handles the tab close event from the close button
+		"""
+		
 		pagenum = self.page_num(tab)
 		if pagenum != -1:
 			self.remove_page(pagenum)

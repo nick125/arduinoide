@@ -6,6 +6,7 @@
 #
 # System imports
 try:
+	import os
 	import gtk
 	import gtksourceview2
 	
@@ -16,8 +17,11 @@ except ImportError, exception:
 	raise SystemExit, "** Error loading required dependencies. **"
 
 import arduinoide.ui.main
+from arduinoide import ideglobals
+from arduinoide.core.i18n import gt
 
 def init():
+	gt.initialize(os.path.join(ideglobals.RESOURCES_PATH, "mo"))
 	gui = arduinoide.ui.main.MainWindow()
 	gui.notebook.new_tab(gtksourceview2.View(), "New Tab")
 	gui.notebook.new_tab(gtksourceview2.View(), "New Tab 2")
