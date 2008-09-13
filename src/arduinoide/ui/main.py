@@ -9,7 +9,7 @@ import gtk
 
 # Our imports
 
-from arduinoide.ui.i18n import _
+from arduinoide.core.i18n.gt import _
 from arduinoide import ideglobals
 from arduinoide.ui.tabs import NotebookWidget
 
