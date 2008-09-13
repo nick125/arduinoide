@@ -26,7 +26,7 @@ class MainWindow( gtk.Window ):
 		self.buildGui()
     
     
-	def buildGui( self ):
+	def buildGui(self):
 		"""
 			This functions builds the main gui
 		"""
@@ -37,21 +37,19 @@ class MainWindow( gtk.Window ):
 		self.accelGroup = accelGroup
         
 		self.set_title("%s %s" % (ideglobals.PRODUCT_NAME, ideglobals.PRODUCT_VERSIONSTR))
-		self.connect( "destroy", self.close)
+		self.connect("destroy", self.close)
        
 		self.vBox = gtk.VBox()
         
 		self.vBox.pack_start(self._buildMenu(), False, False)
 		self.vBox.pack_start(self._buildToolBar(), False, False)
 		self.vBox.pack_start(self._buildMainNoteBook(), False, False)
-        
-		self._buildVte()
 
 		self.vBox.show_all()
 		self.add(self.vBox)
 		self.show()
 
-	def _buildMenu( self ):
+	def _buildMenu(self):
 		"""
 			Builds The application menu
 		"""
@@ -62,17 +60,14 @@ class MainWindow( gtk.Window ):
 		menuBar = gtk.MenuBar()
 		menuBar.show()
         
-		for item in ( _( "File" ), _( "Edit" ), _( "Project" ), _( "View" ), _("Snippets") ):
+		for item in (_("File"), _("Edit"), _("Project"), _("View"), _("Snippets")):
 			mainItems[item] = gtk.MenuItem(item)
 			mainItems[item].show()
-
-
-		for item in ( _( "File" ), _( "Edit" ), _( "Project" ), _( "View" ), _("Snippets") ):
 			menuBar.append(mainItems[item])
 
 		return menuBar
 
-	def _buildToolBar( self ):
+	def _buildToolBar(self):
 		"""
 			Builds The IDE toolbar
 
@@ -100,7 +95,7 @@ class MainWindow( gtk.Window ):
 
 		return handlebox
 
-	def _buildMainNoteBook( self ):
+	def _buildMainNoteBook(self):
 		"""
 			Builds the main notebook of the ide
 			Returns The notebook.
@@ -108,53 +103,11 @@ class MainWindow( gtk.Window ):
 
 		self.notebook = gtk.Notebook()
 		self.notebook.set_tab_pos( gtk.POS_TOP )
-        
-		tab =  gtksv.View()
-		tab.set_show_line_numbers( True ) 
-        
-		self.notebook.append_page( tab, gtk.Label( _( "New Tab" ) ) )
 		self.notebook.show()
 
 		return self.notebook
 
-	def _buildVte( self ):
-		"""
-			Builds a VTE
-		"""
-        
-		vt = vte.Terminal ()
-		vt.connect("child-exited", lambda term: gtk.main_quit())
-		vt.fork_command()
-
-		self.notebook.append_page( vt, gtk.Label( "VTE" ) )
-    
-	def _newStockImageButton( self, label, stock ):
-		"""
-			Creates an image button from gtk's stock.
-        
-			Arguments:
-			- self
-			- label: The buttons label
-			- stock: The Stock image the button will use. E.g: gtk.STOCK_GO-FORWARD
-        
-			Returns buttonLabelBox - A gtk.HBox that contains the new image stock button.
-		"""
-        
-		buttonLabelBox = gtk.HBox()
-       
-		im = gtk.image_new_from_stock( stock, gtk.ICON_SIZE_BUTTON )
-       
-		label = gtk.Label( label )
-		label.set_alignment( 0.0, 0.5 )
-		label.set_use_underline( True )
-        
-		buttonLabelBox.pack_start( im )
-		buttonLabelBox.pack_start( label )
-		buttonLabelBox.show_all()
-        
-		return buttonLabelBox
-
-	def close( self, *args ):
+	def close(self, *args):
 		"""
 			Close Function for the quit button.
         
@@ -162,4 +115,4 @@ class MainWindow( gtk.Window ):
 			- self: The main object pointer.
 			- *args: The widget callback arguments.
 		"""
-		print "close"
+		gtk.main_quit()
