@@ -6,8 +6,6 @@
 #
 # System imports
 try:
-	import os
-	import sys
 	import gtk
 	import gtksourceview2
 	
