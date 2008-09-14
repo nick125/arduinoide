@@ -49,23 +49,47 @@ class MainWindow( gtk.Window ):
 		self.add(self.vBox)
 		self.show()
 
+	def _addTopLevelMenu(self, menubar, label):
+		"""
+			Adds a toplevel menu entry to the specified menubar
+		"""
+		mitem = gtk.MenuItem(label)
+		menu = gtk.Menu()
+		mitem.set_submenu(menu)
+		menubar.append(mitem)
+		return mitem
+		
+	def _addChildMenuItem(self, menu, label, callback=None, data=None):
+		"""
+			Adds a simple Menu item with a callback
+		"""
+
+		mitem = gtk.MenuItem(label)
+		if callback:
+			mitem.connect_object("activate", callback, data)		
+		menu.append(mitem)
+				
 	def _buildMenu(self):
 		"""
 			Builds The application menu
 		"""
 
-		menu = gtk.Menu()
-		mainItems = {}
+		self.mainmenu = gtk.MenuBar()
+		self.menuitems = {}
+		# Build the base menus
+		for menu in (("file", _("_File")), ("edit", _("_Edit")), ("view", _("_View")), ("help", _("_Help")),):
+			self.menuitems[menu[0]] = self._addTopLevelMenu(self.mainmenu, menu[1])
 
-		menuBar = gtk.MenuBar()
-		menuBar.show()
-        
-		for item in (_("File"), _("Edit"), _("Project"), _("View"), _("Snippets")):
-			mainItems[item] = gtk.MenuItem(item)
-			mainItems[item].show()
-			menuBar.append(mainItems[item])
-
-		return menuBar
+		# Build the File menu
+		fm = self.menuitems["file"].get_submenu()
+		self._addChildMenuItem(fm, _("_New"), callback=None, data=None)
+		self._addChildMenuItem(fm, _("_Open"), callback=None, data=None)
+		self._addChildMenuItem(fm, _("_Save"), callback=None, data=None)
+		self._addChildMenuItem(fm, _("Save _As"), callback=None, data=None)
+		fm.append(gtk.SeparatorMenuItem())
+		self._addChildMenuItem(fm, _("Quit"), callback=self.close, data=None)
+			
+		return self.mainmenu
 		
 	def _addToolbarStock(self, toolbar, image, label, tooltip, callback=None, data=None, position=-1):
 		"""
@@ -125,4 +149,6 @@ class MainWindow( gtk.Window ):
 			- self: The main object pointer.
 			- *args: The widget callback arguments.
 		"""
+		
 		gtk.main_quit()
+		raise SystemExit
