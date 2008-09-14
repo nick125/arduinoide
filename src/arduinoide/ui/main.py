@@ -79,7 +79,8 @@ class MainWindow( gtk.Window ):
 		# Build the base menus
 		for menu in (("file", _("_File")), ("edit", _("_Edit")), ("view", _("_View")), ("help", _("_Help")),):
 			self.menuitems[menu[0]] = self._addTopLevelMenu(self.mainmenu, menu[1])
-
+		self.menuitems["help"].set_right_justified(True)
+		
 		# Build the File menu
 		fm = self.menuitems["file"].get_submenu()
 		self._addChildMenuItem(fm, _("_New"), callback=None, data=None)
