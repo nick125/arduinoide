@@ -13,9 +13,13 @@
 # ONLY COMPILES SKETCH TO A .HEX FILE - Upload.sh needed to burn to AVR
 # Supports only "make" and "make clean"
 #
+# Date:			17-Oct-2008
+# Purpose:		Pulling Pythonized code into functions and/or procedures
+#
 # Date:			10-Sep-2008
 # Purpose:		More Pythonizing; removed some old code no longer needed.
 #				Eradicated the $@ and $< macros, and Pythonized most commands.
+#				Replaced all the substitution macros with calls to BSubst();
 # Author:		Dale Weber <robotguy@hybotics.org>
 #
 # Date:			02-Sep-2008
@@ -101,10 +105,10 @@ REMOVE = "rm -f";
 MV = "mv -f";
 
 # Define all object files.
-OBJ = "$(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)" # OBJ = "$(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)";
+OBJ = BSubst(SRC, ".c". ".o") + " " + BSubst(CXXSRC, "cpp", ".o") + " " + BSubst(ASRC, ".S", ".o");
 
 # Define all listing files.
-LST = "$(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)" # LST = "$(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)";
+LST = BSubst(ASRC, ".S", ".lst") + " " + BSubst(CXXSRC, ".cpp", ".lst") + " " BSubst(SRC, ".c", ".lst");
 
 # Combine all necessary flags and optional flags.
 # Add target processor to flags.
@@ -115,6 +119,7 @@ ALL_ASFLAGS = "-mmcu=" + MCU + " -I. -x assembler-with-cpp " + ASFLAGS;
 # Targets start here - the real conversion begins!
 #
 appletFile = "applet/" + TARGET;
+appletFilePde = appletFile + TARGET_EXT;
 appletFileElf = appletFile + ".elf";
 appletFileHex = appletFile + ".hex";
 appletFileCpp = appletFile + ".cpp";
@@ -122,7 +127,7 @@ appletFileCpp = appletFile + ".cpp";
 targetFile = "";
 sourceFile = "";
 
-def BuildAppletFiles():
+def BuildAppletFiles(target):
 # applet_files: $(TARGET).pde
 	# Here is the "preprocessing".
 	# It creates a .cpp file based with the same name as the .pde file.
@@ -134,33 +139,54 @@ def BuildAppletFiles():
 
 	if (not os.path.isdir("applet")):
 		os.mkdir("applet");
-		sourceFile = TARGET + TARGET_EXT;
 
 		# Copy the file
-		BCopyFile(sourceFile, appletFileCpp, '#include "WProgram.h"');
+		BCopyFile(target + ".pde", target + ".cpp", '#include "WProgram.h"');
 
 	return;
 
-def BuildElf():
+# Parameter is OBJ
+def BuildAppletCore(objects):
+		for i in objects:
+			command = AR + " rcs applet/core.a " + i;
+			print command;
+			BExecute(command);
+
+		return;
+		
+def BuildElfHex():
+#	$(OBJCOPY) -O $(FORMAT) -R .eeprom $< $@
+# Pythonized
+	command = OBJCOPY +" -O " + FORMAT + " -R .eeprom"
+	BExecute(command);
+
+# Link: create ELF output file from library.
+#	applet/$(TARGET).elf: $(TARGET).pde applet/core.a 
+
+# Pythonized
+	command =  CC + " " + ALL_CFLAGS + " " + appletFileCpp + " -L. applet/core.a " +  LDFLAGS
+	BExecute(command);
 
 	return;
 
-def BuildHex():
-
-	return;
-
-def Build():
+def BuildProject():
 	
-	BuildElf();
-	BuildHex();
+	BuildElfHex();
+	CleanAll();
 
 	return;
 
 # Default target.
 def BuildAll():
 	BuildAppletFiles();
-	Build();
+	BuildProject();
 	BShowSize(appletFileElf, MSG_SIZE_AFTER, HEXSIZE);
+	return;
+
+def CleanAll():
+	command = REMOVE + " " + appletFileHex + " " + appletFile + ".eep " + appletFile + ".cof " + appletFileElf + appletFile + ".map " + appletFile + ".sym " + appleFile + ".lss applet/core.a " + OBJ + " " + LST + " " + BSubst(SRC, ".c", ".s") + " " + BSubst(SRC, ".c", ".s") +" " + BSubst(SRC, ".c", ".d") + " " + BSubst(CXXSRC, ".cpp", ".s") + " " + BSubst(CXXSRC, ".cpp", ".d")";
+	BExecute(command);
+	
 	return;
 
 # all: applet_files build sizeafter
@@ -170,7 +196,7 @@ def BuildAll():
 elf: appletFileElf;
 hex: appletFileHex;
 
-# Display size of file.
+# For Display of the size of files.
 HEXSIZE = SIZE + " --target=" + FORMAT + appletFileHex;
 ELFSIZE = SIZE + appletFileElf;
 
@@ -181,17 +207,17 @@ ELFSIZE = SIZE + appletFileElf;
 	BExecute(command);
 
 	# Link: create ELF output file from library.
-	applet/$(TARGET).elf: $(TARGET).pde applet/core.a 
+#	applet/$(TARGET).elf: $(TARGET).pde applet/core.a 
 
 	# Pythonized
 	command =  CC + " " + ALL_CFLAGS + " " + appletFileCpp + " -L. applet/core.a " +  LDFLAGS
 	BExecute(command);
 
-applet/core.a: $(OBJ)
-	@for i in $(OBJ); do
-		echo $(AR) rcs applet/core.a $$i;
-		$(AR) rcs applet/core.a $$i;
-	done
+#applet/core.a: $(OBJ)
+#	@for i in $(OBJ); do
+#		echo $(AR) rcs applet/core.a $$i;
+#		$(AR) rcs applet/core.a $$i;
+#	done
 
 # Pythonized
 	for i in OBJ:
@@ -200,39 +226,43 @@ applet/core.a: $(OBJ)
 		BExecute(command);
 
 # Compile: create object files from C++ source files.
-.cpp.o:
-	$(CXX) -c $(ALL_CXXFLAGS) $< -o $@
-	# Pythonized 
+#.cpp.o:
+#	$(CXX) -c $(ALL_CXXFLAGS) $< -o $@
+
+# Pythonized
 	command = CXX + " -c " + ALL_CXXFLAGS;
 	BExecute(command);
 
 # Compile: create object files from C source files.
-.c.o:
-	$(CC) -c $(ALL_CFLAGS) $< -o $@
-	# Pythonized 
+#.c.o:
+#	$(CC) -c $(ALL_CFLAGS) $< -o $@
+
+# Pythonized
 	command = CC + " -c " + ALL_CFLAGS;
 	BExecute(command);
 
 # Compile: create assembler files from C source files.
-.c.s:
-	$(CC) -S $(ALL_CFLAGS) $< -o $@
-	# Pythonized
+#.c.s:
+#	$(CC) -S $(ALL_CFLAGS) $< -o $@
+
+# Pythonized
 	command = CC + " -S " + ALL_CFLAGS;
 	BExecute(command);
 
 # Assemble: create object files from assembler source files.
-.S.o:
-	$(CC) -c $(ALL_ASFLAGS) $< -o $@
-	# Pythonized
+#.S.o:
+#	$(CC) -c $(ALL_ASFLAGS) $< -o $@
+
+# Pythonized
 	command = CC + " -c " + ALL_ASFLAGS;
 	BExecute(command);
 	
 # Target: clean project.
-clean:
-	$(REMOVE) applet/$(TARGET).hex applet/$(TARGET).eep applet/$(TARGET).cof applet/$(TARGET).elf \
-	applet/$(TARGET).map applet/$(TARGET).sym applet/$(TARGET).lss applet/core.a \
-	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
+#clean:
+#	$(REMOVE) applet/$(TARGET).hex applet/$(TARGET).eep applet/$(TARGET).cof applet/$(TARGET).elf \
+#	applet/$(TARGET).map applet/$(TARGET).sym applet/$(TARGET).lss applet/core.a \
+#	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
 
-	# Pythonized - Not done yet.
-	command = REMOVE + appletFileHex + " " + appletFile + ".eep " + appletFile + ".cof " + appletFileElf + appletFile + ".map " + appletFile + ".sym " + appleFile + ".lss + applet/core.a " + OBJ + " " + LST + " " + SRC.replace(".c", ".s") + " " + SRC.replace(".c", ".s") +" " + SRC.replace(".c", ".d") + " " + CXXSRC.replace(".cpp", ".s") + " " + CXXSRC.replace(".cpp", ".d")";
+# Pythonized - Not done yet.
+	command = REMOVE + " " + appletFileHex + " " + appletFile + ".eep " + appletFile + ".cof " + appletFileElf + appletFile + ".map " + appletFile + ".sym " + appleFile + ".lss applet/core.a " + OBJ + " " + LST + " " + BSubst(SRC, ".c", ".s") + " " + BSubst(SRC, ".c", ".s") +" " + BSubst(SRC, ".c", ".d") + " " + BSubst(CXXSRC, ".cpp", ".s") + " " + BSubst(CXXSRC, ".cpp", ".d")";
 	BExecute(command);
