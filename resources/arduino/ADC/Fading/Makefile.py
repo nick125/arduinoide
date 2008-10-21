@@ -2,7 +2,7 @@
 #
 # ArduinoIDE Project (http://arduino.bitmeadow.org)
 # (c) 2008 ArduinoIDE Contributors
-# Licensed under the GPL v2 or later. View LICENSE for more information
+# Licensed under the GPLv2 or later. View LICENSE for more information
 #
 # Arduino 0011 Makefile
 # Arduino adaptation by mellis, eighthave, oli.keller, it.daniher
@@ -12,6 +12,10 @@
 # HEAVILY MODIFIED FROM STOCK VERSION!
 # ONLY COMPILES SKETCH TO A .HEX FILE - Upload.sh needed to burn to AVR
 # Supports only "make" and "make clean"
+#
+#
+# Date:			21-Oct-2008
+# Purpose:		Added import checks like ArduinoIDE.py
 #
 # Date:			17-Oct-2008
 # Purpose:		Pulling Pythonized code into functions and/or procedures
@@ -35,7 +39,17 @@
 # Purpose:		Conversion to Python started
 # Author:		Dale Weber <robotguy@hybotics.org>				
 #
-import BuildSystemLib, os, shutil;
+# System imports
+try:
+	import os;
+	import BuildSystemLib;
+	import shutil;
+            
+	except ImportError, exception:
+		print "******************************************************"
+		print " There was an error loading the following dependency: ";
+		print " %s" % exc.message;
+		raise SystemExit, "** Error loading required dependencies. **";
 
 command = "";
 
